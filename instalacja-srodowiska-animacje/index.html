@@ -15,236 +15,296 @@
     padding: 48px 24px;
   }
 
-  .container {
-    max-width: 760px;
-    margin: 0 auto;
-  }
+  .container { max-width: 780px; margin: 0 auto; }
 
-  header {
+  header { margin-bottom: 48px; }
+  header h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  header p { color: #555; font-size: 15px; }
+
+  .section-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #333; margin: 40px 0 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: #1e1e1e; }
+
+  /* ── HERO — jak uruchomić ── */
+  .hero {
+    background: #111;
+    border: 1px solid #7c3aed;
+    border-radius: 16px;
+    overflow: hidden;
     margin-bottom: 48px;
+    box-shadow: 0 0 40px rgba(124,58,237,0.12);
   }
 
-  header h1 {
-    font-size: 28px;
-    font-weight: 700;
+  .hero-header {
+    background: #7c3aed;
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 14px;
+  }
+
+  .hero-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  .hero-header h2 { font-size: 17px; font-weight: 700; color: #fff; }
+  .hero-header p  { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  .hero-steps {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .hero-step {
+    display: flex;
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid #1a1a1a;
+    align-items: flex-start;
+  }
+
+  .hero-step:last-child { border-bottom: none; }
+
+  .hero-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #7c3aed;
     color: #fff;
-    margin-bottom: 8px;
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
 
-  header p {
-    color: #666;
-    font-size: 15px;
+  .hero-step-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .hero-step-desc  { font-size: 13px; color: #777; line-height: 1.55; }
+  .hero-step-desc strong { color: #bbb; }
+
+  .code-inline {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    color: #a8d8a8;
+    padding: 2px 8px;
+    border-radius: 4px;
   }
 
+  .hero-note {
+    margin: 0 24px 20px;
+    padding: 10px 14px;
+    background: #1a1500;
+    border: 1px solid #3a2d00;
+    border-radius: 8px;
+    font-size: 13px; color: #f59e0b; line-height: 1.5;
+  }
+
+  /* ── STEPS ── */
   .step {
-    margin-bottom: 32px;
+    margin-bottom: 14px;
     border: 1px solid #1e1e1e;
     border-radius: 12px;
     overflow: hidden;
   }
 
   .step-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    background: #161616;
+    display: flex; align-items: center; gap: 14px;
+    padding: 13px 18px;
+    background: #141414;
     border-bottom: 1px solid #1e1e1e;
   }
 
   .step-number {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #7c3aed;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%; background: #7c3aed;
+    color: #fff; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
 
-  .step-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-  }
+  .step-number.green { background: #1a3a1a; color: #4caf50; }
+  .step-number.blue  { background: #1a2a3a; color: #4a9eff; }
+  .step-number.alt   { background: #1e1a2e; color: #a78bfa; }
 
-  .step-subtitle {
-    font-size: 13px;
-    color: #555;
-    margin-left: auto;
-  }
-
-  .step-body {
-    padding: 20px;
-    background: #0f0f0f;
-  }
-
-  .code-block {
-    background: #141414;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 16px 18px;
-    position: relative;
-    margin-top: 8px;
-  }
-
-  .code-block code {
-    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
-    font-size: 13px;
-    line-height: 1.8;
-    color: #a8d8a8;
-    white-space: pre-wrap;
-    word-break: break-all;
-    display: block;
-    padding-right: 60px;
-  }
-
-  .copy-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #222;
-    border: 1px solid #333;
-    color: #888;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-
-  .copy-btn:hover { background: #2a2a2a; color: #ccc; }
-  .copy-btn.copied { background: #1a3a1a; color: #4caf50; border-color: #2d5a2d; }
+  .step-title    { font-size: 15px; font-weight: 600; color: #fff; }
+  .step-subtitle { font-size: 12px; color: #444; margin-left: auto; white-space: nowrap; }
+  .step-body     { padding: 16px 18px; background: #0f0f0f; }
 
   .note {
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: #1a1a1a;
+    padding: 9px 13px;
+    background: #141414;
     border-left: 3px solid #7c3aed;
     border-radius: 0 6px 6px 0;
-    font-size: 13px;
-    color: #888;
-    line-height: 1.6;
+    font-size: 13px; color: #777; line-height: 1.6;
   }
 
+  .note.blue   { border-left-color: #4a9eff; }
+  .note.orange { border-left-color: #f59e0b; color: #f59e0b; background: #1a1500; border: 1px solid #3a2d00; border-left: 3px solid #f59e0b; }
+
+  /* ── SKILLS LIST ── */
   .skills-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
-  .skill-tag {
+  .skill-card {
     background: #141414;
-    border: 1px solid #222;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 12px;
-    font-family: 'JetBrains Mono', monospace;
-    color: #a8d8a8;
-  }
-
-  .skill-tag span {
-    color: #555;
-    margin-right: 4px;
-  }
-
-  .elevenlabs-box {
-    background: #141414;
-    border: 1px solid #222;
+    border: 1px solid #1e1e1e;
     border-radius: 8px;
-    padding: 18px;
-    margin-top: 8px;
+    padding: 10px 13px;
   }
 
-  .elevenlabs-steps {
-    list-style: none;
-    counter-reset: el-counter;
+  .skill-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: #a8d8a8;
+    margin-bottom: 3px;
   }
 
-  .elevenlabs-steps li {
-    counter-increment: el-counter;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
+  .skill-desc { font-size: 11px; color: #555; line-height: 1.4; }
+
+  /* ── WORKFLOW ── */
+  .workflow {
+    margin-top: 4px;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .wf-step {
+    display: flex; gap: 14px;
+    padding: 14px 16px;
     border-bottom: 1px solid #1a1a1a;
-    font-size: 14px;
-    color: #bbb;
-    line-height: 1.5;
+    align-items: flex-start;
   }
 
-  .elevenlabs-steps li:last-child { border-bottom: none; }
+  .wf-step:last-child { border-bottom: none; }
 
-  .elevenlabs-steps li::before {
-    content: counter(el-counter);
-    min-width: 22px;
-    height: 22px;
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
+  .wf-num {
+    min-width: 24px; height: 24px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: #666;
-    flex-shrink: 0;
-    margin-top: 1px;
+    background: #1a1a2e; border: 1px solid #2a2a4a;
+    color: #4a9eff; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
   }
 
-  .elevenlabs-steps a {
-    color: #7c3aed;
-    text-decoration: none;
+  .wf-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .wf-desc  { font-size: 13px; color: #666; line-height: 1.5; }
+  .wf-desc strong { color: #f59e0b; }
+  .wf-desc em { color: #a78bfa; font-style: normal; }
+
+  /* ── ELEVENLABS ── */
+  .el-box {
+    background: #141414;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 4px;
   }
 
+  .el-steps { list-style: none; counter-reset: el; }
+
+  .el-steps li {
+    counter-increment: el;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 8px 0; border-bottom: 1px solid #1a1a1a;
+    font-size: 13px; color: #bbb; line-height: 1.5;
+  }
+
+  .el-steps li:last-child { border-bottom: none; }
+
+  .el-steps li::before {
+    content: counter(el);
+    min-width: 20px; height: 20px;
+    background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #555;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  .el-steps a { color: #7c3aed; text-decoration: none; }
+
+  /* ── REMOTION ── */
+  .creator-options {
+    background: #141414; border: 1px solid #1e1e1e;
+    border-radius: 8px; padding: 12px 14px;
+    margin-top: 10px; display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .creator-option { display: flex; gap: 10px; font-size: 13px; color: #bbb; align-items: flex-start; }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    background: #1a1a2e; border: 1px solid #2a2a4a; color: #4a9eff;
+    padding: 2px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+  }
+
+  .code-block {
+    background: #141414; border: 1px solid #1e1e1e;
+    border-radius: 8px; padding: 12px 14px;
+    position: relative; margin-top: 8px;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 13px; line-height: 1.8; color: #a8d8a8;
+    white-space: pre-wrap; word-break: break-all;
+    display: block; padding-right: 60px;
+  }
+
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: #1e1e1e; border: 1px solid #2a2a2a;
+    color: #555; font-size: 11px; padding: 3px 9px;
+    border-radius: 4px; cursor: pointer; transition: all 0.15s;
+    font-family: inherit; white-space: nowrap;
+  }
+
+  .copy-btn:hover  { background: #2a2a2a; color: #bbb; }
+  .copy-btn.copied { background: #1a3a1a; color: #4caf50; border-color: #2d5a2d; }
+
+  /* ── VERIFY ── */
   .verify-block {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 8px;
-    margin-top: 8px;
+    gap: 8px; margin-top: 4px;
   }
 
   .verify-item {
-    background: #141414;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 12px 14px;
+    background: #141414; border: 1px solid #1e1e1e;
+    border-radius: 8px; padding: 12px 14px;
   }
 
   .verify-item code {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: #a8d8a8;
-    display: block;
-    margin-bottom: 4px;
+    font-size: 12px; color: #a8d8a8;
+    display: block; margin-bottom: 4px; word-break: break-all;
   }
 
-  .verify-item small {
-    font-size: 11px;
-    color: #555;
-  }
+  .verify-item small { font-size: 11px; color: #444; }
 
   footer {
-    margin-top: 48px;
-    text-align: center;
-    font-size: 12px;
-    color: #333;
+    margin-top: 48px; padding-bottom: 24px;
+    text-align: center; font-size: 12px; color: #2a2a2a;
   }
 
   @media (max-width: 600px) {
-    body { padding: 24px 16px; }
+    body { padding: 20px 14px; }
     header h1 { font-size: 22px; }
-    .step-subtitle { display: none; }
     .skills-grid { grid-template-columns: 1fr; }
-    .verify-block { grid-template-columns: 1fr; }
-    .code-block { padding: 14px; }
-    .copy-btn { position: static; display: block; margin-bottom: 10px; width: fit-content; }
+    .step-subtitle { display: none; }
     .code-block code { padding-right: 0; }
+    .copy-btn { position: static; display: block; margin-bottom: 8px; }
   }
 </style>
 </head>
@@ -256,127 +316,260 @@
     <p>HyperFrames · Remotion · video-use · FFmpeg · Claude Code</p>
   </header>
 
-  <!-- KROK 1 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-number">1</div>
-      <div class="step-title">Homebrew</div>
-      <div class="step-subtitle">package manager dla macOS</div>
-    </div>
-    <div class="step-body">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
-        <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+  <!-- ══════════════════════════════════════
+       JAK URUCHOMIĆ
+  ══════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-header">
+      <div class="hero-icon">⚡</div>
+      <div>
+        <h2>Jak zainstalować — 3 kroki</h2>
+        <p>Skrypt zainstaluje wszystko automatycznie</p>
       </div>
-      <p class="note">Jeśli już masz Homebrew, pomiń ten krok.</p>
+    </div>
+
+    <div class="hero-steps">
+      <div class="hero-step">
+        <div class="hero-num">1</div>
+        <div>
+          <div class="hero-step-title">Rozpakuj folder</div>
+          <div class="hero-step-desc">Wypakuj pobrany ZIP w dowolnym miejscu na dysku — np. na Pulpicie.</div>
+        </div>
+      </div>
+      <div class="hero-step">
+        <div class="hero-num">2</div>
+        <div>
+          <div class="hero-step-title">Uruchom skrypt instalacyjny</div>
+          <div class="hero-step-desc">
+            Otwórz Terminal, przejdź do folderu i uruchom:<br><br>
+            <span class="code-inline">cd ~/Desktop/animacje-claude-code</span><br>
+            <span class="code-inline">bash install.sh</span><br><br>
+            Skrypt zainstaluje Homebrew, Node.js, FFmpeg, Claude Code CLI i wszystkie skille. Przy Homebrew może zapytać o <strong>hasło administratora</strong> — to normalne.
+          </div>
+        </div>
+      </div>
+      <div class="hero-step">
+        <div class="hero-num">3</div>
+        <div>
+          <div class="hero-step-title">Gotowe — uruchom Claude Code</div>
+          <div class="hero-step-desc">
+            Po instalacji otwórz dowolny folder w Terminalu i wpisz:<br><br>
+            <span class="code-inline">claude</span><br><br>
+            Opisz co chcesz zrobić — Claude dobierze narzędzie, zaproponuje koncepcje i poprowadzi Cię przez cały proces.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-note">
+      ⚠ Instalacja video-use pobiera ~314MB danych — upewnij się że masz połączenie z internetem. Cały proces może trwać 5–10 minut.
     </div>
   </div>
 
-  <!-- KROK 2 -->
+  <!-- ══════════════════════════════════════
+       CO ZOSTAŁO ZAINSTALOWANE
+  ══════════════════════════════════════ -->
+  <div class="section-label">Co zostało zainstalowane</div>
+
   <div class="step">
     <div class="step-header">
-      <div class="step-number">2</div>
-      <div class="step-title">Node.js + npm</div>
-      <div class="step-subtitle">wymagany v18+</div>
+      <div class="step-number blue">S</div>
+      <div class="step-title">Skille Claude Code</div>
+      <div class="step-subtitle">instalują się do ~/.claude/skills/</div>
     </div>
     <div class="step-body">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
-        <code>brew install node</code>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-name">remotion-best-practices</div>
+          <div class="skill-desc">Zasady pracy z Remotion — wybór narzędzia, koncepcje, podgląd, render</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">hyperframes</div>
+          <div class="skill-desc">Tworzenie animacji HTML/GSAP → MP4: kompozycje, napisy, TTS, audio-reactive</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">gsap</div>
+          <div class="skill-desc">Dokumentacja GSAP: timeline, easing, stagger, animacje w HyperFrames</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">hyperframes-cli</div>
+          <div class="skill-desc">Komendy CLI: init, lint, preview, render, tts, transcribe</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">hyperframes-registry</div>
+          <div class="skill-desc">Gotowe komponenty i sceny HyperFrames</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">render-to-mp4</div>
+          <div class="skill-desc">Renderowanie animacji HTML/CSS/JS do MP4 przez Puppeteer + FFmpeg</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">scroll-animation</div>
+          <div class="skill-desc">Animacje sterowane scrollem z wideo: FFmpeg → klatki → HTML/canvas</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">remotion-to-hyperframes</div>
+          <div class="skill-desc">Konwersja projektów Remotion → HyperFrames</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">website-to-hyperframes</div>
+          <div class="skill-desc">Zamiana strony www na kompozycję HyperFrames</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-name">video-use</div>
+          <div class="skill-desc">Konwersacyjny montaż wideo: cięcie, napisy, kolor, overlaye (314MB)</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- KROK 3 -->
+  <!-- ══════════════════════════════════════
+       WORKFLOW CLAUDE
+  ══════════════════════════════════════ -->
+  <div class="section-label">Jak Claude pracuje z animacjami</div>
+
   <div class="step">
     <div class="step-header">
-      <div class="step-number">3</div>
-      <div class="step-title">FFmpeg</div>
-      <div class="step-subtitle">obróbka wideo</div>
+      <div class="step-number blue">W</div>
+      <div class="step-title">Obowiązkowy workflow przy każdej animacji</div>
     </div>
     <div class="step-body">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
-        <code>brew install ffmpeg</code>
+      <div class="workflow">
+        <div class="wf-step">
+          <div class="wf-num">1</div>
+          <div>
+            <div class="wf-title">Rekomendacja narzędzia</div>
+            <div class="wf-desc">Claude pyta co chcesz osiągnąć i <strong>rekomenduje HyperFrames lub Remotion</strong> z uzasadnieniem. Ty decydujesz czy się zgadzasz.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">2</div>
+          <div>
+            <div class="wf-title">Warstwa audio przez ElevenLabs</div>
+            <div class="wf-desc">Claude pyta czy chcesz dodać: <em>głos lektora</em> / <em>efekty dźwiękowe</em> / <em>muzykę w tle</em> / <em>kombinację</em> / <em>bez dźwięku</em>. Uwzględnia to już w koncepcjach.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">3</div>
+          <div>
+            <div class="wf-title">3 koncepcje wizualne przed kodem</div>
+            <div class="wf-desc">Claude proponuje <strong>3 różne koncepcje</strong> (nazwa, opis wizualny, nastrój, technika, czas). Nie pisze kodu bez Twojego wyboru.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">4</div>
+          <div>
+            <div class="wf-title">Podgląd w przeglądarce</div>
+            <div class="wf-desc">Po napisaniu kodu Claude uruchamia podgląd i <strong>czeka na Twoje potwierdzenie</strong> że wygląda dobrze.</div>
+          </div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num">5</div>
+          <div>
+            <div class="wf-title">Render do MP4</div>
+            <div class="wf-desc">Dopiero po potwierdzeniu — Claude renderuje do pliku MP4.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- KROK 4 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-number">4</div>
-      <div class="step-title">Claude Code CLI</div>
-      <div class="step-subtitle">główne narzędzie</div>
-    </div>
-    <div class="step-body">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
-        <code>npm install -g @anthropic-ai/claude-code</code>
-      </div>
-    </div>
-  </div>
+  <!-- ══════════════════════════════════════
+       ELEVENLABS
+  ══════════════════════════════════════ -->
+  <div class="section-label">ElevenLabs — głos, muzyka, efekty dźwiękowe</div>
 
-  <!-- KROK 5 -->
   <div class="step">
     <div class="step-header">
-      <div class="step-number">5</div>
-      <div class="step-title">Skille animacyjne</div>
-      <div class="step-subtitle">10 skillów</div>
+      <div class="step-number">E</div>
+      <div class="step-title">Konfiguracja ElevenLabs API</div>
+      <div class="step-subtitle">wymagane dla audio w animacjach</div>
     </div>
     <div class="step-body">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
-        <code>npx skills add hyperframes
-npx skills add gsap
-npx skills add hyperframes-cli
-npx skills add hyperframes-registry
-npx skills add render-to-mp4
-npx skills add scroll-animation
-npx skills add video-use
-npx skills add remotion-best-practices
-npx skills add remotion-to-hyperframes
-npx skills add website-to-hyperframes</code>
-      </div>
-      <div class="skills-grid" style="margin-top:16px">
-        <div class="skill-tag"><span>▸</span>hyperframes</div>
-        <div class="skill-tag"><span>▸</span>gsap</div>
-        <div class="skill-tag"><span>▸</span>hyperframes-cli</div>
-        <div class="skill-tag"><span>▸</span>hyperframes-registry</div>
-        <div class="skill-tag"><span>▸</span>render-to-mp4</div>
-        <div class="skill-tag"><span>▸</span>scroll-animation</div>
-        <div class="skill-tag"><span>▸</span>video-use</div>
-        <div class="skill-tag"><span>▸</span>remotion-best-practices</div>
-        <div class="skill-tag"><span>▸</span>remotion-to-hyperframes</div>
-        <div class="skill-tag"><span>▸</span>website-to-hyperframes</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- KROK 6 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-number">6</div>
-      <div class="step-title">ElevenLabs API</div>
-      <div class="step-subtitle">wymagany dla video-use</div>
-    </div>
-    <div class="step-body">
-      <div class="elevenlabs-box">
-        <ol class="elevenlabs-steps">
-          <li>Zarejestruj konto na <a href="https://try.elevenlabs.io/xmv9g1jff7he" target="_blank">elevenlabs.io</a> — darmowy tier wystarczy na start</li>
+      <div class="el-box">
+        <ol class="el-steps">
+          <li>Zarejestruj konto na <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> — darmowy tier wystarczy na start</li>
           <li>Wejdź w <strong>Settings → API Keys</strong> i skopiuj klucz</li>
-          <li>Przy pierwszym użyciu <code style="background:#1a1a1a;padding:2px 6px;border-radius:4px;font-size:12px;">/video-use</code> Claude zapyta o klucz — wklej go wtedy</li>
+          <li>Claude zapyta o klucz przy pierwszym użyciu audio — wklej go wtedy</li>
         </ol>
       </div>
+      <p class="note" style="margin-top:10px">ElevenLabs umożliwia generowanie głosu lektora (voiceover), efektów dźwiękowych (SFX) i muzyki w tle zsynchronizowanej z animacją.</p>
     </div>
   </div>
 
-  <!-- WERYFIKACJA -->
+  <!-- ══════════════════════════════════════
+       REMOTION — PER PROJEKT
+  ══════════════════════════════════════ -->
+  <div class="section-label">Remotion — nowy projekt wideo</div>
+
   <div class="step">
     <div class="step-header">
-      <div class="step-number" style="background:#1a3a1a;color:#4caf50">✓</div>
-      <div class="step-title">Weryfikacja</div>
-      <div class="step-subtitle">sprawdź czy wszystko działa</div>
+      <div class="step-number blue">i</div>
+      <div class="step-title">Remotion instaluje się per projekt</div>
+    </div>
+    <div class="step-body">
+      <p class="note blue">Remotion to framework React — każde wideo to osobny projekt Node.js. Poniższe komendy wykonujesz gdy Claude zasugeruje Remotion i zdecydujesz się go użyć.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number alt">R1</div>
+      <div class="step-title">Utwórz nowy projekt</div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+        <code>npx create-video@latest</code>
+      </div>
+      <div class="creator-options">
+        <div class="creator-option"><span class="tag">szablon</span> Wybierz <strong style="color:#fff">Blank</strong></div>
+        <div class="creator-option"><span class="tag">TailwindCSS</span> Wybierz <strong style="color:#fff">Yes</strong></div>
+        <div class="creator-option"><span class="tag">Skills</span> Wybierz <strong style="color:#fff">Yes</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number alt">R2</div>
+      <div class="step-title">Zainstaluj zależności i uruchom Studio</div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+        <code>cd my-video
+npm install
+npm run dev</code>
+      </div>
+      <p class="note blue" style="margin-top:10px">Studio otwiera się pod <strong style="color:#4a9eff">localhost:3000</strong> — podgląd animacji klatkę po klatce.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number alt">R3</div>
+      <div class="step-title">Render do MP4</div>
+      <div class="step-subtitle">po zatwierdzeniu podglądu</div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+        <code>npx remotion render src/index.ts NazwaKompozycji out/video.mp4</code>
+      </div>
+      <p class="note orange" style="margin-top:10px">⚠ Renderuj dopiero po sprawdzeniu animacji w Studio i potwierdzeniu że wygląda dobrze.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       WERYFIKACJA
+  ══════════════════════════════════════ -->
+  <div class="section-label">Weryfikacja instalacji</div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number green">✓</div>
+      <div class="step-title">Sprawdź czy wszystko działa</div>
     </div>
     <div class="step-body">
       <div class="verify-block">
@@ -397,21 +590,17 @@ npx skills add website-to-hyperframes</code>
   </div>
 
   <footer>
-    Skille instalują się do ~/.claude/skills/ · FFmpeg do /opt/homebrew/bin/
+    Skille → ~/.claude/skills/ &nbsp;·&nbsp; FFmpeg → /opt/homebrew/bin/ &nbsp;·&nbsp; Remotion → per projekt
   </footer>
 
 </div>
-
 <script>
   function copyCode(btn) {
     const code = btn.nextElementSibling.textContent;
     navigator.clipboard.writeText(code).then(() => {
       btn.textContent = 'Skopiowano';
       btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'Kopiuj';
-        btn.classList.remove('copied');
-      }, 2000);
+      setTimeout(() => { btn.textContent = 'Kopiuj'; btn.classList.remove('copied'); }, 2000);
     });
   }
 </script>
