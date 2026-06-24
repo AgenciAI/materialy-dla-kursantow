@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Analyzer — Instrukcja obsługi | Agenci AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --dark: #0A0A0A;
+    --card: #111111;
+    --border: #2a2a2a;
+    --border-light: #404040;
+    --primary: #8B019F;
+    --primary-glow: #CF03F6;
+    --primary-light: #B100CD;
+    --text: #ffffff;
+    --muted: #A1A1A1;
+    --tag-bg: rgba(255,255,255,0.08);
+  }
+
+  body {
+    font-family: "Be Vietnam Pro", sans-serif;
+    background: var(--black);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 16px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    padding: 0 24px;
+    margin-bottom: 80px;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-light);
+    border-radius: 50px;
+    padding: 14px 32px;
+    width: 100%;
+    max-width: 900px;
+  }
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-logo span { color: var(--primary-glow); }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    flex: 1;
+    justify-content: center;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 0 24px 96px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary-glow); }
+  h1 {
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  h1 .accent { color: var(--primary-glow); }
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 80px 0; border-top: 1px solid var(--border); }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    background: var(--tag-bg);
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .section-intro {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 48px;
+    max-width: 620px;
+  }
+
+  /* ── CARDS ── */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cards-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+    box-shadow: 0 0 16px rgba(139,1,159,0.3);
+  }
+  .card h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .card .tag {
+    display: inline-block; margin-top: 12px;
+    background: rgba(139,1,159,0.2);
+    border: 1px solid rgba(207,3,246,0.3);
+    color: var(--primary-glow);
+    font-size: 12px; padding: 3px 10px; border-radius: 50px;
+  }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 28px; }
+  .step { display: grid; grid-template-columns: 56px 1fr; gap: 20px; align-items: start; }
+  .step-num {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 500; flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(139,1,159,0.4);
+  }
+  .step-body h3 { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
+  .step-body p { color: var(--muted); line-height: 1.7; }
+  .step-body strong { color: var(--text); }
+
+  /* ── HIGHLIGHT ── */
+  .highlight {
+    background: linear-gradient(135deg, rgba(139,1,159,0.15), rgba(207,3,246,0.05));
+    border: 1px solid rgba(207,3,246,0.3);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+  .highlight h3 { font-size: 18px; font-weight: 500; margin-bottom: 10px; color: var(--primary-glow); }
+  .highlight p { color: var(--muted); line-height: 1.7; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; font-size: 12px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: .5px;
+    color: var(--muted); padding: 10px 16px; border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 14px 16px; font-size: 14px; color: var(--muted);
+    border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6;
+  }
+  td:first-child { color: var(--text); font-weight: 400; }
+  tr:last-child td { border-bottom: none; }
+  .yes { color: #4ade80; }
+  .no  { color: #f87171; }
+  .partial { color: #facc15; }
+
+  /* ── TIPS ── */
+  .tips { display: flex; flex-direction: column; gap: 12px; }
+  .tip {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .tip-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tip-body h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .tip-body p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FLOW ── */
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 28px 0; }
+  .flow-step {
+    background: var(--card); border: 1px solid var(--border-light);
+    border-radius: 10px; padding: 12px 18px; font-size: 13px; text-align: center;
+  }
+  .flow-step strong {
+    display: block; font-size: 11px; color: var(--primary-glow);
+    text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px;
+  }
+  .flow-arrow { color: var(--primary); font-size: 18px; }
+
+  /* ── GLOW ── */
+  .glow-bg {
+    position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(139,1,159,0.15) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px; text-align: center;
+    color: var(--muted); font-size: 14px;
+  }
+  footer a { color: var(--primary-glow); text-decoration: none; }
+
+  /* ── PLATFORM BLOCKS ── */
+  .plat-block {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    margin-top: 36px;
+  }
+  .plat-header {
+    padding: 14px 22px;
+    font-size: 17px;
+    font-weight: 400;
+  }
+  .plat-modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .plat-mode {
+    padding: 20px 22px;
+  }
+  .plat-mode-label {
+    font-size: 11px;
+    color: var(--primary-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .plat-detail-row {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0 0 10px;
+  }
+  .plat-key { color: var(--text); }
+  .badge-yes {
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .badge-no {
+    background: rgba(239,68,68,0.15);
+    color: #f87171;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 32px; }
+    h2 { font-size: 26px; }
+    .cards, .cards-2 { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .step { grid-template-columns: 44px 1fr; }
+    .step-num { width: 44px; height: 44px; font-size: 16px; }
+    .plat-modes { grid-template-columns: 1fr; }
+    .plat-mode + .plat-mode { border-left: none !important; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-bg"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">⚡ <span>Agenci</span> AI — Social Media Analyzer</div>
+    <ul class="nav-links">
+      <li><a href="#start">Jak zacząć</a></li>
+      <li><a href="#ustawienia">Ustawienia</a></li>
+      <li><a href="#wyniki">Wyniki</a></li>
+      <li><a href="#analiza">Analiza AI</a></li>
+      <li><a href="#platformy">Platformy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag"><span class="dot"></span> Instrukcja obsługi</div>
+  <h1>Social Media <span class="accent">Analyzer</span></h1>
+  <p>Znajdź viral content na TikToku, Instagramie i LinkedIn. Przeanalizuj go z AI i wyjdź z gotowymi pomysłami na własne treści.</p>
+</div>
+
+<!-- CO TO JEST -->
+<section>
+  <div class="container">
+    <div class="section-tag">Wstęp</div>
+    <h2>Do czego służy to narzędzie</h2>
+    <p class="section-intro">Narzędzie przeszukuje trzy platformy social media jednocześnie i dla każdego znalezionego posta generuje gotową analizę AI — co działa, dlaczego działa i jak to zaadaptować do Twojej marki.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h3>Szukasz</h3>
+        <p>Wpisujesz słowo kluczowe, hashtag lub nazwę profilu. Narzędzie odpytuje TikToka, Instagrama i LinkedIn równolegle.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Dostajesz wyniki</h3>
+        <p>Karty z postami posortowane po wyświetleniach, polubieniach lub platformie. Widzisz statystyki każdego posta.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✨</div>
+        <h3>Analizujesz z AI</h3>
+        <p>Klikasz post i dostajesz diagnozę, 5 pomysłów, 10 hooków i gotowy scenariusz — dopasowany do Twojej marki.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JAK ZACZĄĆ -->
+<section id="start">
+  <div class="container">
+    <div class="section-tag">Krok po kroku</div>
+    <h2>Jak zacząć</h2>
+    <p class="section-intro">Od otwarcia narzędzia do gotowych wyników — cały proces krok po kroku.</p>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Wypełnij Profil Marki</h3>
+          <p>Na górze strony masz zwijany panel „Profil Marki". Kliknij go żeby rozwinąć. Wypełnij branżę, ton głosu, grupę docelową, preferowany styl CTA i słowa kluczowe. Możesz też wkleić do 3 przykładów własnych scenariuszy — AI będzie na ich podstawie generować nowe w Twoim stylu. <strong>Ten krok jest opcjonalny, ale mocno zmienia jakość wyników.</strong></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Zapisz Profil Marki na stałe</h3>
+          <p>Kliknij „Zapisz profil na stałe". Pojawi się okienko z kodem JSON — skopiuj go i wklej w Cowork jako wiadomość do Claude. Claude zaktualizuje kod aplikacji i <strong>następnym razem Twoje dane załadują się automatycznie</strong> bez wpisywania od nowa.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Wybierz platformy</h3>
+          <p>Trzy przyciski: TikTok, Instagram, LinkedIn. Możesz włączyć dowolną kombinację — kliknięcie wyłącza daną platformę (szarzeeje). Domyślnie wszystkie trzy są włączone. Możesz zostawić tylko jedną jeśli zależy Ci na szybkości.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Wybierz typ wyszukiwania</h3>
+          <p><strong>Słowo kluczowe / #hashtag</strong> — szuka po treści postów. Wpisz np. „automatyzacja", „finanse osobiste" albo „#motivation". Używaj tego do badania trendów i tego co działa w Twojej niszy.<br><br>
+          <strong>Profil / Twórca</strong> — szuka po konkretnym koncie. TikTok i Instagram: wpisz samą nazwę konta bez @ (np. <em>agenciai</em>). LinkedIn: wpisz pełny URL profilu (np. <em>https://linkedin.com/in/nazwa</em>). Używaj tego do analizy konkretnych twórców lub sprawdzenia co publikuje konkurencja. Szczegóły działania każdej platformy w sekcji Platformy poniżej.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3>Ustaw parametry</h3>
+          <p>Ustaw liczbę wyników (5–30 na platformę), minimalną liczbę wyświetleń i opcjonalnie zakres dat. Szczegóły każdego ustawienia opisane są w sekcji poniżej.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h3>Kliknij „Analizuj treści →" i poczekaj</h3>
+          <p>Panel postępu pokaże co się dzieje z każdą platformą osobno. TikTok i Instagram zwracają wyniki po 30–90 sekundach. <strong>LinkedIn może pracować 2–4 minuty</strong> — to normalne, narzędzie czeka cierpliwie i nie przerywaj procesu.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- USTAWIENIA -->
+<section id="ustawienia">
+  <div class="container">
+    <div class="section-tag">Parametry</div>
+    <h2>Ustawienia wyszukiwania</h2>
+    <p class="section-intro">Każde ustawienie wpływa na to co dostaniesz w wynikach.</p>
+
+    <div class="cards cards-2">
+      <div class="card">
+        <div class="card-icon">🔢</div>
+        <h3>Liczba wyników na platformę</h3>
+        <p>Suwak od 5 do 30. Tyle postów próbujesz pobrać z każdej włączonej platformy. Przy 3 platformach i wartości 10 — możesz dostać do 30 wyników łącznie.</p>
+        <span class="tag">Rekomendowane: 10–15</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">👁</div>
+        <h3>Min. wyświetlenia (TikTok / IG)</h3>
+        <p>Posty z mniejszą liczbą wyświetleń zostaną odfiltrowane. Pomaga wyłapać tylko viral content. Wpisujesz tę wartość sam — formularz startuje z 5 000, ale możesz wpisać 0 żeby zobaczyć wszystkie wyniki.</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <h3>⚠️ Tryb profilu wyłącza filtr wyświetleń</h3>
+      <p>Jeśli szukasz po konkretnym profilu / twórcy, filtr minimalnych wyświetleń jest automatycznie wyłączony. Chodzi o to, żebyś widział wszystkie filmy danego twórcy — nie tylko te z wielkim zasięgiem. Na LinkedIn filtr wyświetleń zawsze jest wyłączony.</p>
+    </div>
+
+    <h3 style="font-size: 22px; font-weight: 400; margin: 48px 0 16px;">Zakres dat</h3>
+    <p style="color: var(--muted); margin-bottom: 28px; line-height: 1.7;">Kontroluje jak daleko wstecz sięga wyszukiwanie. Działa dla <strong style="color:var(--text)">LinkedIn</strong> (wszystkie tryby) i <strong style="color:var(--text)">TikToka w trybie profilu</strong>. Instagram nie obsługuje filtrowania dat po stronie platformy.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Opcja</th><th>Co robi</th><th>Kiedy używać</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Wszystko</td>
+            <td>Brak filtra — platforma zwraca domyślnie najnowsze lub najpopularniejsze</td>
+            <td>Codzienny przegląd trendów</td>
+          </tr>
+          <tr>
+            <td>Tydzień / Miesiąc</td>
+            <td>Tylko posty z ostatnich 7 lub 30 dni</td>
+            <td>Co aktualnie działa w niszy</td>
+          </tr>
+          <tr>
+            <td>3 mies. / 6 mies.</td>
+            <td>Szerszy zakres historyczny</td>
+            <td>Szukanie sprawdzonych formatów i sezonowości</td>
+          </tr>
+          <tr>
+            <td>Rok</td>
+            <td>Posty z ostatnich 12 miesięcy</td>
+            <td>Analiza długoterminowych trendów</td>
+          </tr>
+          <tr>
+            <td>🎲 Losowo</td>
+            <td>Każde kliknięcie losuje inny zakres (tydzień, miesiąc, rok itd.) — czasem dostaniesz świeże treści, czasem starsze</td>
+            <td>Eksploracja bez powtórzeń, odkrywanie różnych epok contentu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- WYNIKI -->
+<section id="wyniki">
+  <div class="container">
+    <div class="section-tag">Wyniki</div>
+    <h2>Jak czytać wyniki</h2>
+    <p class="section-intro">Po zakończeniu analizy zobaczysz siatkę kart. Każda karta to jeden post z wybranej platformy.</p>
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon">📋</div>
+        <div class="tip-body">
+          <h4>Co widać na karcie</h4>
+          <p>Platforma, autor, liczba wyświetleń, polubień i komentarzy, fragment opisu posta oraz link do oryginału. Wyświetlenia to główny miernik zasięgu — po nich domyślnie sortujemy.</p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">↕️</div>
+        <div class="tip-body">
+          <h4>Sortowanie wyników</h4>
+          <p>Trzy przyciski nad wynikami: <strong>Wyświetlenia</strong> (malejąco po zasięgu), <strong>Polubienia</strong> (malejąco po zaangażowaniu) i <strong>Platforma</strong> (grupuje TikTok → Instagram → LinkedIn). Klikaj je żeby zmienić perspektywę.</p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔗</div>
+        <div class="tip-body">
+          <h4>Oryginalny post</h4>
+          <p>Każda karta ma link do oryginalnego posta. Otwórz go żeby zobaczyć pełną treść, dźwięk, komentarze. Narzędzie pokazuje metadane i statystyki — nie odtwarza wideo bezpośrednio.</p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">✨</div>
+        <div class="tip-body">
+          <h4>Analiza AI — kliknij kartę</h4>
+          <p>Kliknij dowolną kartę żeby otworzyć widok szczegółowy z pełną analizą AI. Opisany szczegółowo w sekcji poniżej.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALIZA AI -->
+<section id="analiza">
+  <div class="container">
+    <div class="section-tag">Analiza AI</div>
+    <h2>Cztery zakładki analizy</h2>
+    <p class="section-intro">Po kliknięciu karty otwiera się widok szczegółowy. AI analizuje transkrypt lub treść posta i generuje cztery rodzaje wyników.</p>
+
+    <div class="flow">
+      <div class="flow-step"><strong>Krok 1</strong>Klikasz kartę posta</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Krok 2</strong>AI czyta transkrypt</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Krok 3</strong>Generuje 4 zakładki</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>Krok 4</strong>Kopiujesz i używasz</div>
+    </div>
+
+    <div class="cards cards-2">
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3>Diagnoza</h3>
+        <p>Wyjaśnia <strong>DLACZEGO</strong> ten post działa. Analizuje haki emocjonalne, strukturę, timing, to co zatrzymuje scrollowanie. Pomaga zrozumieć mechanizm, nie tylko skopiować format.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💡</div>
+        <h3>Pomysły</h3>
+        <p>5 konkretnych pomysłów na Twoje własne posty inspirowanych tym contentem. Z wypełnionym Profilem Marki — dopasowane do Twojej branży i grupy docelowej.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎣</div>
+        <h3>Hooki</h3>
+        <p>10 hooków do pierwszych sekund lub zdań, podzielonych na typy: pytanie, kontrowersja, liczba, historia, problem. Gotowe do wklejenia i lekkiej adaptacji.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h3>Scenariusz</h3>
+        <p>Pełny scenariusz ze strukturą: hook → rozwinięcie → CTA. Jeśli wklejałeś przykłady w Profilu Marki, ten będzie pisany w Twoim stylu i tonie.</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <h3>💜 Dlaczego Profil Marki robi tak dużą różnicę</h3>
+      <p>Bez profilu marki AI generuje ogólne pomysły pasujące do każdej firmy. Z profilem — dostosowuje ton głosu, dobiera właściwe słowa kluczowe, unika tematów których nie chcesz i naśladuje styl Twoich przykładowych scenariuszy. Różnica między ogólnym outputem a czymś gotowym do publikacji jest znacząca.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORMY -->
+<section id="platformy">
+  <div class="container">
+    <div class="section-tag">Platformy</div>
+    <h2>Jak działa każda platforma</h2>
+    <p class="section-intro">Trzy platformy, dwa tryby na każdej — i różne ograniczenia. Poniżej dokładnie co się dzieje pod spodem i czego możesz się spodziewać.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Funkcja</th><th>TikTok</th><th>Instagram</th><th>LinkedIn</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Wyszukiwanie po słowie / #hashtagu</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td>Wyszukiwanie po profilu / @twórcy</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td>Filtr dat — tryb słowo kluczowe</td>
+            <td class="no">✗ brak</td>
+            <td class="no">✗ brak</td>
+            <td class="yes">✓ działa</td>
+          </tr>
+          <tr>
+            <td>Filtr dat — tryb profil</td>
+            <td class="yes">✓ działa</td>
+            <td class="no">✗ brak</td>
+            <td class="yes">✓ działa</td>
+          </tr>
+          <tr>
+            <td>Transkrypt mowy (speech-to-text)</td>
+            <td class="yes">✓ napisy VTT — oba tryby</td>
+            <td class="partial">⚡ tylko tryb profilu</td>
+            <td class="no">✗ nie dotyczy</td>
+          </tr>
+          <tr>
+            <td>Czas pobierania</td>
+            <td>30–60 sek.</td>
+            <td>30–90 sek.</td>
+            <td>1–4 min.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TikTok -->
+    <div class="plat-block">
+      <div class="plat-header" style="background:linear-gradient(90deg,#0a0010 0%,#140022 100%);border-left:4px solid #CF03F6;">♫ TikTok</div>
+      <div class="plat-modes">
+        <div class="plat-mode">
+          <div class="plat-mode-label">Tryb: Słowo kluczowe / #hashtag</div>
+          <p class="plat-detail-row"><span class="plat-key">Co wpisujesz:</span> frazę (np. <em>automatyzacja pracy</em>) lub hashtag (np. <em>motivation</em>). Bez # — narzędzie samo rozpoznaje hashtagi.</p>
+          <p class="plat-detail-row"><span class="plat-key">Co szuka:</span> TikTok Search — ta sama wyszukiwarka co w aplikacji mobilnej. Wyniki to algorytmiczny mix popularnych i świeżych filmów ze wszystkich kont. Kolejność decyduje algorytm TikToka, nie data.</p>
+          <p class="plat-detail-row"><span class="plat-key">Filtr dat:</span> <span class="badge-no">Niedostępny</span> — TikTok nie udostępnia parametru dat dla wyników wyszukiwania po frazie.</p>
+          <p class="plat-detail-row"><span class="plat-key">Transkrypt dla AI:</span> <span class="badge-yes">Napisy VTT</span> — narzędzie automatycznie pobiera napisy z każdego znalezionego filmu. AI widzi co twórca mówi, nie tylko opis pod filmem. Najgłębsza analiza ze wszystkich trybów i platform.</p>
+          <p class="plat-detail-row"><span class="plat-key">Min. wyświetlenia:</span> filtr aktywny — odfiltruje filmy poniżej ustawionego progu.</p>
+        </div>
+        <div class="plat-mode" style="border-left:1px solid rgba(255,255,255,0.06)">
+          <div class="plat-mode-label">Tryb: Profil / Twórca</div>
+          <p class="plat-detail-row"><span class="plat-key">Co wpisujesz:</span> nazwę konta <strong>bez @</strong> (np. <em>agenciai</em> albo <em>mrbeast</em>).</p>
+          <p class="plat-detail-row"><span class="plat-key">Co szuka:</span> filmy wybranego konta posortowane od najnowszych. Posty przypięte do profilu są automatycznie pomijane.</p>
+          <p class="plat-detail-row"><span class="plat-key">Filtr dat:</span> <span class="badge-yes">Działa</span> — możesz ograniczyć wyniki do konkretnego okresu (tydzień, miesiąc, rok itd.).</p>
+          <p class="plat-detail-row"><span class="plat-key">Transkrypt dla AI:</span> <span class="badge-yes">Napisy VTT</span> — identycznie jak w trybie słowa kluczowego. Pełna mowa twórcy dostępna do analizy.</p>
+          <p class="plat-detail-row"><span class="plat-key">Min. wyświetlenia:</span> filtr wyłączony — widzisz wszystkie filmy konta, nie tylko virale.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instagram -->
+    <div class="plat-block">
+      <div class="plat-header" style="background:linear-gradient(90deg,#0a0010 0%,#1a000f 100%);border-left:4px solid #E1306C;">📸 Instagram</div>
+      <div class="plat-modes">
+        <div class="plat-mode">
+          <div class="plat-mode-label">Tryb: Słowo kluczowe / #hashtag</div>
+          <p class="plat-detail-row"><span class="plat-key">Co wpisujesz:</span> frazę lub hashtag. Instagram lepiej reaguje na popularne hashtagi lub frazy anglojęzyczne niż na ogólne polskie słowa.</p>
+          <p class="plat-detail-row"><span class="plat-key">Co szuka:</span> reelsy przez wewnętrzną wyszukiwarkę Instagrama. Wyniki są <strong>nieprzewidywalne</strong> — Instagram nie gwarantuje żadnej liczby wyników. Czasem dostaniesz 10, czasem 2, czasem 0. To ograniczenie samej platformy, nie błąd narzędzia.</p>
+          <p class="plat-detail-row"><span class="plat-key">Filtr dat:</span> <span class="badge-no">Niedostępny</span> — Instagram nie udostępnia filtrowania dat w tym trybie.</p>
+          <p class="plat-detail-row"><span class="plat-key">Transkrypt dla AI:</span> <span class="badge-no">Brak mowy</span> — AI dostaje tylko opis pod rolką (caption). Jeśli twórca napisał mało — analiza będzie mniej konkretna.</p>
+          <p class="plat-detail-row"><span class="plat-key">Min. wyświetlenia:</span> filtr aktywny. Przy 0 wynikach zmniejsz tę wartość lub spróbuj innego hashtagu.</p>
+        </div>
+        <div class="plat-mode" style="border-left:1px solid rgba(255,255,255,0.06)">
+          <div class="plat-mode-label">Tryb: Profil / Twórca</div>
+          <p class="plat-detail-row"><span class="plat-key">Co wpisujesz:</span> nazwę konta <strong>bez @</strong> (np. <em>agenciai</em>).</p>
+          <p class="plat-detail-row"><span class="plat-key">Co szuka:</span> najnowsze reelsy wybranego konta, posortowane od najnowszych.</p>
+          <p class="plat-detail-row"><span class="plat-key">Filtr dat:</span> <span class="badge-no">Niedostępny</span> — brak parametru dat w tym trybie.</p>
+          <p class="plat-detail-row"><span class="plat-key">Transkrypt dla AI:</span> <span class="badge-yes">Pełny speech-to-text</span> — narzędzie uruchamia płatny moduł Apify (~0,04$ za minutę wideo), który zamienia mowę z rolki na tekst. AI widzi dosłownie co twórca mówi. To jedyny tryb na Instagramie z prawdziwym transkryptem.</p>
+          <p class="plat-detail-row"><span class="plat-key">Min. wyświetlenia:</span> filtr wyłączony.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LinkedIn -->
+    <div class="plat-block">
+      <div class="plat-header" style="background:linear-gradient(90deg,#000a14 0%,#001122 100%);border-left:4px solid #0A66C2;">💼 LinkedIn</div>
+      <div class="plat-modes">
+        <div class="plat-mode">
+          <div class="plat-mode-label">Tryb: Słowo kluczowe / #hashtag</div>
+          <p class="plat-detail-row"><span class="plat-key">Co wpisujesz:</span> frazę (np. <em>AI w sprzedaży</em>) lub hashtag (np. <em>automatyzacja</em>).</p>
+          <p class="plat-detail-row"><span class="plat-key">Co szuka:</span> posty LinkedIn posortowane <strong>od najnowszych</strong>. W przeciwieństwie do TikToka, tu nie ma algorytmu — dostajesz chronologicznie najświeższe posty z danym słowem lub hashtagiem.</p>
+          <p class="plat-detail-row"><span class="plat-key">Filtr dat:</span> <span class="badge-yes">Działa</span> — możesz zawęzić do tygodnia, miesiąca, 3 miesięcy, 6 miesięcy lub roku.</p>
+          <p class="plat-detail-row"><span class="plat-key">Transkrypt dla AI:</span> nie dotyczy — LinkedIn to platforma tekstowa. AI analizuje treść posta, która często ma kilkaset słów — bardzo dobra podstawa do analizy.</p>
+          <p class="plat-detail-row"><span class="plat-key">Min. wyświetlenia:</span> filtr wyłączony — LinkedIn nie udostępnia liczby wyświetleń przez API.</p>
+          <p class="plat-detail-row"><span class="plat-key">Czas:</span> najwolniejsza platforma — 1 do 4 minut. Normalne, czekaj.</p>
+        </div>
+        <div class="plat-mode" style="border-left:1px solid rgba(255,255,255,0.06)">
+          <div class="plat-mode-label">Tryb: Profil / Twórca</div>
+          <p class="plat-detail-row"><span class="plat-key">Co wpisujesz:</span> <strong>pełny URL profilu LinkedIn</strong>, np. <em>https://linkedin.com/in/nazwa-użytkownika</em>. Sam username bez URL nie zadziała — LinkedIn wymaga adresu URL.</p>
+          <p class="plat-detail-row"><span class="plat-key">Co szuka:</span> wszystkie posty danego autora posortowane od najnowszych.</p>
+          <p class="plat-detail-row"><span class="plat-key">Filtr dat:</span> <span class="badge-yes">Działa</span> — identycznie jak w trybie słowa kluczowego.</p>
+          <p class="plat-detail-row"><span class="plat-key">Transkrypt dla AI:</span> nie dotyczy — tylko tekst posta.</p>
+          <p class="plat-detail-row"><span class="plat-key">Min. wyświetlenia:</span> filtr wyłączony.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <div class="section-tag">Rozwiązywanie problemów</div>
+    <h2>Coś nie działa?</h2>
+    <p class="section-intro">Najczęstsze sytuacje i jak je rozwiązać.</p>
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon">😕</div>
+        <div class="tip-body">
+          <h4>0 wyników</h4>
+          <p>Sprawdź kolejno: (1) czy masz włączoną co najmniej jedną platformę, (2) zmniejsz min. wyświetlenia — może posty mają mniej niż 5000 wyśw., (3) spróbuj innego słowa kluczowego, (4) Instagram przy wyszukiwaniu po słowie bywa kapryśny — spróbuj samego TikToka.</p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">⏳</div>
+        <div class="tip-body">
+          <h4>Bardzo długo czeka</h4>
+          <p>To normalne przy LinkedIn (2–4 min) i przy większej liczbie wyników. Panel postępu pokazuje aktualny status. Narzędzie czeka aż platforma skończy pracę zanim pokaże wyniki — nie zamykaj okna ani nie przerywaj.</p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔢</div>
+        <div class="tip-body">
+          <h4>Statystyki pokazują 0 wyświetleń</h4>
+          <p>Zdarza się głównie na Instagramie — platforma nie zawsze udostępnia liczby przez API. Post jest realny i możesz go przeanalizować z AI — po prostu nie mamy dostępu do liczby wyświetleń.</p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📋</div>
+        <div class="tip-body">
+          <h4>Analiza AI wygląda zbyt ogólnie</h4>
+          <p>Uzupełnij Profil Marki — szczególnie pole „Branża/nisza" i przykładowe scenariusze. Im więcej kontekstu dasz AI, tym bardziej dopasowane do Twojej firmy będą pomysły, hooki i scenariusze.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Narzędzie stworzone przez <a href="https://agenciai.pl">Agenci AI</a> · Działa na Apify + Claude AI · Wymaga aktywnego połączenia Cowork</p>
+</footer>
+
+</body>
+</html>
