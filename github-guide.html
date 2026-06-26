@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub na macOS — Przewodnik · Agenci AI</title>
+  <link rel="icon" href="/api/branding/favicon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #000000;
+      --bg-2:      #0d0d0d;
+      --bg-3:      #111111;
+      --bg-4:      #1a1a1a;
+      --accent:    #8B019F;
+      --glow:      #CF03F6;
+      --border:    #2a2a2a;
+      --border-hi: #3a3a3a;
+      --text:      #ffffff;
+      --text-2:    #cccccc;
+      --text-3:    #888888;
+      --green:     #22c55e;
+      --yellow:    #f59e0b;
+      --red:       #ef4444;
+      --code-bg:   #0a0a0a;
+      --radius:    10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Be Vietnam Pro", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* ── Sidebar nav ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 260px;
+      height: 100vh;
+      background: var(--bg-2);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo img { height: 32px; }
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 20px 24px 10px;
+    }
+    .nav-list { list-style: none; padding: 0 12px 24px; }
+    .nav-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--text-3);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+    .nav-list li a:hover { background: var(--bg-3); color: var(--text); }
+    .nav-list li a.active { background: rgba(139,1,159,0.15); color: var(--glow); }
+    .nav-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      background: var(--bg-4);
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      flex-shrink: 0;
+    }
+    .nav-list li a:hover .nav-num,
+    .nav-list li a.active .nav-num { background: rgba(139,1,159,0.3); color: var(--glow); }
+
+    /* ── Main content ── */
+    .main {
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #000 0%, #0d0020 50%, #0a0015 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 64px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(139,1,159,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(139,1,159,0.2);
+      border: 1px solid rgba(207,3,246,0.4);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--glow);
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #fff 0%, #cf03f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-2);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+    .hero-meta {
+      margin-top: 28px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .hero-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-3);
+    }
+    .hero-tag span { color: var(--green); font-weight: 600; }
+
+    /* ── Sections ── */
+    .content { padding: 0 64px 80px; }
+
+    .section {
+      padding-top: 56px;
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--glow));
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .section-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .section-desc { font-size: 14px; color: var(--text-3); }
+
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 16px; }
+
+    .step {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .step-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+    .step-label-icon {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .step-desc {
+      padding: 6px 20px 0;
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.6;
+    }
+
+    /* ── Code block ── */
+    .code-block {
+      margin: 12px 0 0;
+      position: relative;
+    }
+    .code-block pre {
+      background: var(--code-bg);
+      border-top: 1px solid var(--border);
+      padding: 16px 52px 16px 20px;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #e2e2e2;
+    }
+    .code-block pre .comment { color: #555; font-style: italic; }
+    .code-block pre .cmd { color: #cf03f6; }
+    .code-block pre .flag { color: #8b9cf4; }
+    .code-block pre .str { color: #86efac; }
+    .code-block pre .out { color: #888; }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--bg-4);
+      border: 1px solid var(--border-hi);
+      color: var(--text-3);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: "Be Vietnam Pro", sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.03em;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--glow); background: rgba(139,1,159,0.1); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    /* ── Callouts ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: flex;
+      gap: 10px;
+    }
+    .callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .callout.tip { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); color: #86efac; }
+    .callout.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); color: #fcd34d; }
+    .callout.info { background: rgba(139,1,159,0.08); border: 1px solid rgba(139,1,159,0.3); color: #d8b4fe; }
+    .callout strong { color: inherit; }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 0 0;
+    }
+
+    /* ── Inline code ── */
+    code {
+      background: var(--bg-4);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      color: var(--glow);
+    }
+
+    /* ── Special: Claude section ── */
+    .claude-section .section-num {
+      background: linear-gradient(135deg, #1a0033, #4a00a0);
+      border: 1px solid var(--accent);
+    }
+    .claude-section .step {
+      border-color: rgba(139,1,159,0.3);
+    }
+    .claude-section .step-label { color: #d8b4fe; }
+
+    /* ── LED Studio section ── */
+    .led-section .step { border-color: rgba(207,3,246,0.2); background: rgba(207,3,246,0.03); }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text-3);
+      font-size: 12px;
+    }
+    .footer img { height: 22px; opacity: 0.5; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .hero, .content, .footer { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="/api/branding/logo" alt="Agenci AI" onerror="this.style.display='none'">
+  </div>
+  <div class="sidebar-title">Spis sekcji</div>
+  <ul class="nav-list" id="nav-list">
+    <li><a href="#s1"><span class="nav-num">1</span> Instalacja Homebrew</a></li>
+    <li><a href="#s2"><span class="nav-num">2</span> Instalacja Git</a></li>
+    <li><a href="#s3"><span class="nav-num">3</span> Instalacja GitHub CLI</a></li>
+    <li><a href="#s4"><span class="nav-num">4</span> Konfiguracja tożsamości</a></li>
+    <li><a href="#s5"><span class="nav-num">5</span> Logowanie do GitHub</a></li>
+    <li><a href="#s6"><span class="nav-num">6</span> Inicjalizacja projektu</a></li>
+    <li><a href="#s7"><span class="nav-num">7</span> Tworzenie repo na GitHub</a></li>
+    <li><a href="#s8"><span class="nav-num">8</span> Codzienna praca</a></li>
+    <li><a href="#s9"><span class="nav-num">9</span> Po sesji Claude Code</a></li>
+    <li><a href="#s10"><span class="nav-num">10</span> Podgląd historii</a></li>
+    <li><a href="#s11"><span class="nav-num">11</span> Cofanie zmian</a></li>
+    <li><a href="#s12"><span class="nav-num">12</span> Klonowanie projektu</a></li>
+    <li><a href="#s13"><span class="nav-num">13</span> Komendy pomocnicze gh</a></li>
+    <li><a href="#s14"><span class="nav-num">★</span> LED Offer Studio</a></li>
+  </ul>
+</nav>
+
+<!-- ── Main ── -->
+<div class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      Przewodnik GitHub na macOS
+    </div>
+    <h1>Git & GitHub<br>od zera do backupu</h1>
+    <p class="hero-sub">Kompletna instrukcja instalacji i pracy z Git oraz GitHub CLI na macOS. Komendy po kolei, z opisami po polsku — dla Terminala i sesji Claude Code.</p>
+    <div class="hero-meta">
+      <div class="hero-tag">System: <span>macOS</span></div>
+      <div class="hero-tag">Menedżer pakietów: <span>Homebrew</span></div>
+      <div class="hero-tag">GitHub CLI: <span>gh</span></div>
+      <div class="hero-tag">Przygotowane przez: <span>Agenci AI</span></div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ── 1. Homebrew ── -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Instalacja Homebrew</div>
+          <div class="section-desc">Homebrew to menedżer pakietów na macOS — potrzebny do instalacji Git i GitHub CLI. Jeśli go masz, pomiń ten krok.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź czy Homebrew jest już zainstalowany</div>
+          <div class="step-desc">Jeśli polecenie zwróci wersję — Homebrew jest gotowy, przejdź do sekcji 2.</div>
+          <div class="code-block">
+            <pre><span class="cmd">brew</span> <span class="flag">--version</span>
+<span class="out"># Homebrew 4.x.x  ← jeśli widzisz wersję, masz Homebrew</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zainstaluj Homebrew (jeśli nie masz)</div>
+          <div class="step-desc">Skopiuj i wklej całe polecenie do Terminala, naciśnij Enter. Instalacja trwa kilka minut — Terminal będzie pytał o hasło systemowe.</div>
+          <div class="code-block">
+            <pre>/bin/bash -c <span class="str">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Dodaj Homebrew do PATH (tylko Apple Silicon M1/M2/M3/M4)</div>
+          <div class="step-desc">Na MacBookach z chipem Apple po instalacji musisz jednorazowo dodać Homebrew do ścieżki systemowej.</div>
+          <div class="code-block">
+            <pre><span class="out"># Uruchom te dwa polecenia po kolei:</span>
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout tip"><div class="callout-icon">✓</div><div><strong>Weryfikacja:</strong> po dodaniu do PATH uruchom <code>brew --version</code> — powinnaś zobaczyć numer wersji.</div></div>
+      </div>
+    </div>
+
+    <!-- ── 2. Git ── -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Instalacja Git</div>
+          <div class="section-desc">Git to system kontroli wersji — śledzi zmiany w plikach i pozwala cofać się do wcześniejszych wersji kodu.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź czy Git jest już zainstalowany</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> <span class="flag">--version</span>
+<span class="out"># git version 2.x.x  ← jeśli widzisz wersję, Git jest gotowy</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zainstaluj Git przez Homebrew</div>
+          <div class="code-block">
+            <pre><span class="cmd">brew</span> install git</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zweryfikuj instalację</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> <span class="flag">--version</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 3. GitHub CLI ── -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Instalacja GitHub CLI (gh)</div>
+          <div class="section-desc">GitHub CLI to narzędzie <code>gh</code> — pozwala tworzyć repozytoria, zarządzać nimi i logować się do GitHub bezpośrednio z Terminala.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zainstaluj GitHub CLI</div>
+          <div class="code-block">
+            <pre><span class="cmd">brew</span> install gh</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zweryfikuj instalację</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> <span class="flag">--version</span>
+<span class="out"># gh version 2.x.x  ← poprawna instalacja</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout info"><div class="callout-icon">ℹ</div><div>GitHub CLI (<code>gh</code>) jest oddzielnym narzędziem od Git. Git zarządza plikami lokalnie, <code>gh</code> komunikuje się z serwerem GitHub przez API.</div></div>
+      </div>
+    </div>
+
+    <!-- ── 4. Konfiguracja ── -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">Konfiguracja tożsamości Git</div>
+          <div class="section-desc">Git musi wiedzieć kto robi zmiany — ta informacja trafia do każdego commita. Rób to jednorazowo po instalacji.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Ustaw imię i e-mail (zastąp swoimi danymi)</div>
+          <div class="step-desc">Użyj tego samego e-maila co na koncie GitHub.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> config <span class="flag">--global</span> user.name <span class="str">"Twoje Imię i Nazwisko"</span>
+<span class="cmd">git</span> config <span class="flag">--global</span> user.email <span class="str">"twoj@email.com"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Ustaw domyślną gałąź na "main"</div>
+          <div class="step-desc">Nowoczesny standard — zamiast starej nazwy "master".</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> config <span class="flag">--global</span> init.defaultBranch main</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź zapisaną konfigurację</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> config <span class="flag">--global</span> <span class="flag">--list</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5. Logowanie ── -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">Logowanie do GitHub</div>
+          <div class="section-desc">Jednorazowe uwierzytelnienie GitHub CLI — po tym nie musisz wpisywać hasła przy każdym push.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zaloguj się do GitHub przez CLI</div>
+          <div class="step-desc">Po uruchomieniu polecenia Terminal przeprowadzi Cię krok po kroku przez logowanie. Wybierz: <code>GitHub.com</code> → <code>HTTPS</code> → <code>Login with a web browser</code>.</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> auth login</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź status logowania</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> auth status
+<span class="out"># ✓ Logged in to github.com account twoje-konto (keyring)</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout tip"><div class="callout-icon">✓</div><div>Dane logowania są przechowywane w macOS Keychain — bezpiecznie, bez pliku z hasłem na dysku.</div></div>
+      </div>
+    </div>
+
+    <!-- ── 6. Init ── -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Inicjalizacja nowego projektu lokalnie</div>
+          <div class="section-desc">Jak zacząć śledzić zmiany w istniejącym folderze z projektem.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Przejdź do folderu projektu</div>
+          <div class="code-block">
+            <pre><span class="cmd">cd</span> <span class="str">"/ścieżka/do/twojego/projektu"</span>
+<span class="out"># Przykład:</span>
+<span class="cmd">cd</span> <span class="str">"/Users/samil/Documents/MojProjekt"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zainicjuj repozytorium Git</div>
+          <div class="step-desc">Tworzy ukryty folder <code>.git/</code> — od tej chwili Git śledzi zmiany w tym folderze.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> init</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Stwórz plik .gitignore (co ma być pomijane)</div>
+          <div class="step-desc">Wpisz nazwy folderów i plików które NIE mają trafiać do GitHub — dane, hasła, paczki npm.</div>
+          <div class="code-block">
+            <pre><span class="out"># Przykładowy .gitignore dla projektu Node.js:</span>
+node_modules/
+.env
+data/
+*.log
+.DS_Store</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Dodaj wszystkie pliki do pierwszego commita</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> add .
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Initial commit — pierwsza wersja projektu"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout warn"><div class="callout-icon">⚠</div><div><strong>Ważne:</strong> przed <code>git add .</code> upewnij się że masz <code>.gitignore</code> z plikiem <code>.env</code> — nigdy nie wrzucaj kluczy API na GitHub.</div></div>
+      </div>
+    </div>
+
+    <!-- ── 7. GitHub repo ── -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">Tworzenie repozytorium na GitHub i wysyłanie kodu</div>
+          <div class="section-desc">Jak stworzyć prywatne repozytorium na GitHub i wgrać do niego lokalny projekt jednym poleceniem.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Utwórz prywatne repo i wypchnij kod (zalecane)</div>
+          <div class="step-desc">Jedno polecenie tworzy repo na GitHub, łączy je z lokalnym projektem i wysyła kod. Uruchom z folderu projektu.</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> repo create <span class="str">nazwa-projektu</span> <span class="flag">--private</span> <span class="flag">--source</span>=. <span class="flag">--remote</span>=origin <span class="flag">--push</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Z opisem repozytorium</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> repo create <span class="str">nazwa-projektu</span> \
+  <span class="flag">--private</span> \
+  <span class="flag">--description</span> <span class="str">"Krótki opis projektu"</span> \
+  <span class="flag">--source</span>=. <span class="flag">--remote</span>=origin <span class="flag">--push</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Alternatywnie: ręczne podłączenie istniejącego repo</div>
+          <div class="step-desc">Gdy repo już istnieje na GitHub, a chcesz połączyć je z lokalnym projektem.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> remote add origin https://github.com/twoj-login/nazwa-projektu.git
+<span class="cmd">git</span> branch <span class="flag">-M</span> main
+<span class="cmd">git</span> push <span class="flag">-u</span> origin main</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź adres podłączonego repo</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> remote <span class="flag">-v</span>
+<span class="out"># origin  https://github.com/twoj-login/projekt.git (fetch)
+# origin  https://github.com/twoj-login/projekt.git (push)</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 8. Codzienna praca ── -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <div>
+          <div class="section-title">Codzienna praca — zapisywanie i wysyłanie zmian</div>
+          <div class="section-desc">Standardowy cykl pracy z Git: sprawdź co się zmieniło → dodaj → zapisz commit → wyślij na GitHub.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź stan plików</div>
+          <div class="step-desc">Pokazuje które pliki zostały zmienione, dodane lub usunięte od ostatniego commita.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> status</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Podgląd konkretnych zmian w plikach</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> diff                    <span class="comment"># wszystkie zmiany</span>
+<span class="cmd">git</span> diff server.js          <span class="comment"># zmiany w konkretnym pliku</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Dodaj zmiany do staging (przygotowanie do commita)</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> add .                   <span class="comment"># wszystkie zmienione pliki</span>
+<span class="cmd">git</span> add server.js src/db.js  <span class="comment"># konkretne pliki</span>
+<span class="cmd">git</span> add public/              <span class="comment"># cały folder</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zapisz commit z opisem</div>
+          <div class="step-desc">Opis powinien mówić CO i PO CO zostało zmienione — nie jak.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Krótki opis zmian"</span>
+
+<span class="out"># Przykłady dobrych opisów:</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Dodaj generowanie PDF dla klientów"</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Napraw błąd kalkulacji czasu zwrotu"</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Zmień port serwera z 3000 na 3777"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Wyślij zmiany na GitHub</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> push</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Pełny cykl — wszystko naraz</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> add . && <span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Opis zmian"</span> && <span class="cmd">git</span> push</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 9. Claude Code ── -->
+    <div class="section claude-section" id="s9">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <div>
+          <div class="section-title">Po sesji Claude Code — wysyłanie zmian na GitHub</div>
+          <div class="section-desc">Po tym jak Claude Code wprowadzi zmiany w projekcie, warto je przejrzeć i wysłać do backupu. Oto bezpieczny sposób.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sprawdź co Claude zmienił</div>
+          <div class="step-desc">Zawsze warto wiedzieć co dokładnie trafia na GitHub przed wysłaniem.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> status                  <span class="comment"># lista zmienionych plików</span>
+<span class="cmd">git</span> diff                    <span class="comment"># szczegółowy podgląd zmian linia po linii</span>
+<span class="cmd">git</span> diff <span class="flag">--stat</span>             <span class="comment"># skrócone podsumowanie: ile linii w każdym pliku</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Dodaj wybrane pliki (bezpieczniej niż git add .)</div>
+          <div class="step-desc">Jeśli Claude zmieniał konkretne pliki, lepiej je wskazać ręcznie niż dodawać wszystko naraz.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> add server.js
+<span class="cmd">git</span> add src/pdf.js src/db.js
+<span class="cmd">git</span> add public/js/views/calculator.js
+<span class="cmd">git</span> add public/css/style.css</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Lub dodaj wszystko (szybka opcja, gdy ufasz zmianom)</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> add .
+<span class="out"># Upewnij się że .gitignore wyklucza .env i data/ !</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Commit z opisem co Claude zrobił w tej sesji</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Dodaj integrację OpenAI — raport tygodniowy AI"</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Napraw generowanie PDF — zmiana na systemowy Chrome"</span>
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Dodaj foldery klientów przy tworzeniu kontaktu"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Wyślij backup na GitHub</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> push</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Uruchamianie komend Git bezpośrednio w sesji Claude Code</div>
+          <div class="step-desc">W terminalu Claude Code możesz poprzedzić komendę znakiem <code>!</code> — komenda wykona się w bieżącej sesji i wynik wróci do konwersacji.</div>
+          <div class="code-block">
+            <pre><span class="out"># W polu czatu Claude Code wpisz:</span>
+! git status
+! git add . && git commit -m "Opis zmian" && git push
+! git log --oneline -5</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout info"><div class="callout-icon">ℹ</div><div>Możesz też poprosić Claude Code słownie: <em>"Zrób commit z opisem X i wypchnij na GitHub"</em> — Claude uruchomi odpowiednie komendy git za Ciebie.</div></div>
+      </div>
+    </div>
+
+    <!-- ── 10. Historia ── -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div>
+          <div class="section-title">Podgląd historii zmian</div>
+          <div class="section-desc">Jak sprawdzić co i kiedy zostało zmienione w projekcie.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Historia commitów</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> log                      <span class="comment"># pełna historia z datami i autorami</span>
+<span class="cmd">git</span> log <span class="flag">--oneline</span>            <span class="comment"># skrócona — jeden wiersz na commit</span>
+<span class="cmd">git</span> log <span class="flag">--oneline -10</span>        <span class="comment"># ostatnie 10 commitów</span>
+<span class="cmd">git</span> log <span class="flag">--oneline --graph</span>    <span class="comment"># z grafem gałęzi</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Co zmieniało się w konkretnym pliku</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> log <span class="flag">--oneline</span> -- server.js
+<span class="cmd">git</span> log <span class="flag">-p</span> -- src/db.js         <span class="comment"># z podglądem zmian linia po linii</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Kto i kiedy zmienił konkretną linię</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> blame server.js</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 11. Cofanie ── -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div>
+          <div class="section-title">Cofanie zmian</div>
+          <div class="section-desc">Jak wróciić do wcześniejszej wersji — przed lub po commitcie.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Cofnij zmiany w konkretnym pliku (niezacommitowane)</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> restore server.js        <span class="comment"># przywróć jeden plik do ostatniego commita</span>
+<span class="cmd">git</span> restore .                <span class="comment"># przywróć WSZYSTKIE pliki — ostrożnie!</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Cofnij ostatni commit (zachowaj zmiany w plikach)</div>
+          <div class="step-desc">Commit znika z historii, ale zmiany w plikach zostają — możesz je poprawić i zcommitować jeszcze raz.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> reset HEAD~1              <span class="comment"># cofnij 1 commit wstecz</span>
+<span class="cmd">git</span> reset HEAD~2              <span class="comment"># cofnij 2 commity wstecz</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Usuń plik ze staging (przed commitem)</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> restore <span class="flag">--staged</span> plik.js  <span class="comment"># cofnij "git add" dla pliku</span>
+<span class="cmd">git</span> restore <span class="flag">--staged</span> .        <span class="comment"># cofnij "git add" dla wszystkiego</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout warn"><div class="callout-icon">⚠</div><div><code>git reset --hard</code> usuwa zmiany z plików bezpowrotnie. Nie używaj jeśli nie jesteś pewien — użyj <code>git reset</code> bez <code>--hard</code>.</div></div>
+      </div>
+    </div>
+
+    <!-- ── 12. Klonowanie ── -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <div>
+          <div class="section-title">Klonowanie projektu na nowy komputer</div>
+          <div class="section-desc">Jak pobrać projekt z GitHub na nowy Mac lub po reinstalacji systemu.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Sklonuj repozytorium</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> clone https://github.com/twoj-login/nazwa-projektu
+<span class="cmd">cd</span> nazwa-projektu</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Pobierz najnowsze zmiany z GitHub (gdy repo już masz)</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> pull                     <span class="comment"># pobierz i scal zmiany z origin/main</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Lista Twoich repozytoriów</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> repo list                  <span class="comment"># wszystkie Twoje repo na GitHub</span>
+<span class="cmd">gh</span> repo list <span class="flag">--limit 20</span>     <span class="comment"># z limitem wyników</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 13. Komendy gh ── -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <div class="section-num">13</div>
+        <div>
+          <div class="section-title">Komendy pomocnicze GitHub CLI (gh)</div>
+          <div class="section-desc">Przydatne komendy do zarządzania repozytoriami i kontem GitHub z Terminala.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zarządzanie repozytoriami</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> repo list                              <span class="comment"># lista Twoich repo</span>
+<span class="cmd">gh</span> repo view                              <span class="comment"># info o aktualnym repo</span>
+<span class="cmd">gh</span> repo view <span class="flag">--web</span>                       <span class="comment"># otwórz repo w przeglądarce</span>
+<span class="cmd">gh</span> repo create <span class="str">nowa-nazwa</span> <span class="flag">--private</span>     <span class="comment"># nowe prywatne repo</span>
+<span class="cmd">gh</span> repo create <span class="str">nowa-nazwa</span> <span class="flag">--public</span>      <span class="comment"># nowe publiczne repo</span>
+<span class="cmd">gh</span> repo delete <span class="str">nowa-nazwa</span>               <span class="comment"># usuń repo (potwierdź nazwą)</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Zmiana widoczności repo (private/public)</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> repo edit <span class="flag">--visibility private</span>       <span class="comment"># zmień na prywatne</span>
+<span class="cmd">gh</span> repo edit <span class="flag">--visibility public</span>        <span class="comment"># zmień na publiczne</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Konto i autoryzacja</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> auth status                            <span class="comment"># sprawdź czy jesteś zalogowany</span>
+<span class="cmd">gh</span> auth login                             <span class="comment"># zaloguj się ponownie</span>
+<span class="cmd">gh</span> auth logout                            <span class="comment"># wyloguj się</span>
+<span class="cmd">gh</span> auth refresh <span class="flag">-s</span> repo                  <span class="comment"># odśwież uprawnienia</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Szybki podgląd repo w przeglądarce</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> browse                                 <span class="comment"># otwórz główną stronę repo</span>
+<span class="cmd">gh</span> browse server.js                       <span class="comment"># otwórz konkretny plik na GitHub</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 14. LED Offer Studio ── -->
+    <div class="section led-section" id="s14">
+      <div class="section-header">
+        <div class="section-num">★</div>
+        <div>
+          <div class="section-title">LED Offer Studio — komendy dla tego projektu</div>
+          <div class="section-desc">Gotowe komendy dopasowane do struktury i lokalizacji projektu LED Offer Studio.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Przejdź do folderu projektu</div>
+          <div class="code-block">
+            <pre><span class="cmd">cd</span> <span class="str">"/Users/samil/Documents/Claude Code | Główny/Kalkulator Dla  Firmy LED"</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Backup po sesji Claude Code</div>
+          <div class="step-desc">Sprawdź zmiany, zrób commit i wyślij na GitHub.</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> status
+<span class="cmd">git</span> diff <span class="flag">--stat</span>
+<span class="cmd">git</span> add .
+<span class="cmd">git</span> commit <span class="flag">-m</span> <span class="str">"Opis zmian wprowadzonych przez Claude"</span>
+<span class="cmd">git</span> push</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Klonowanie projektu na nowy Mac</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> clone https://github.com/agenci-ai/led-offer-studio
+<span class="cmd">cd</span> led-offer-studio
+<span class="cmd">npm</span> install
+<span class="out"># Dodaj plik .env z kluczem OpenAI:</span>
+echo <span class="str">'OPENAI_API_KEY=sk-twój-klucz'</span> > .env
+echo <span class="str">'OPENAI_MODEL=gpt-4o-mini'</span> >> .env
+<span class="out"># Uruchom aplikację:</span>
+<span class="cmd">npm</span> start</pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Otwórz repo w przeglądarce</div>
+          <div class="code-block">
+            <pre><span class="cmd">gh</span> repo view agenci-ai/led-offer-studio <span class="flag">--web</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-label"><div class="step-label-icon"></div>Historia zmian projektu</div>
+          <div class="code-block">
+            <pre><span class="cmd">git</span> log <span class="flag">--oneline</span>
+<span class="cmd">git</span> log <span class="flag">--oneline --graph --all</span></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+        </div>
+        <div class="callout tip"><div class="callout-icon">✓</div><div><strong>Pamiętaj:</strong> plik <code>.env</code> z kluczem OpenAI jest w <code>.gitignore</code> — nigdy nie trafia na GitHub. Po sklonowaniu musisz go stworzyć ręcznie.</div></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Footer -->
+  <div class="footer">
+    <img src="/api/branding/logo" alt="Agenci AI" onerror="this.style.display='none'">
+    <div>Przewodnik GitHub na macOS · Agenci AI · agenciai.pl</div>
+    <div>kontakt@agenciai.pl · +48 510 433 191</div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+  // Copy to clipboard
+  function copyCode(btn) {
+    const pre = btn.previousElementSibling;
+    const text = pre.innerText
+      .split('\n')
+      .filter(l => !l.trim().startsWith('#'))  // skip comment-only lines
+      .join('\n')
+      .trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Skopiowano';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Kopiuj';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // fallback
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      el.remove();
+      btn.textContent = '✓ Skopiowano';
+      setTimeout(() => { btn.textContent = 'Kopiuj'; }, 2000);
+    });
+  }
+
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('#nav-list a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
