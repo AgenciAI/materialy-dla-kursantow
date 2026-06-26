@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Słownik pojęć technicznych · Agenci AI</title>
+  <link rel="icon" href="/api/branding/favicon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #000; --bg-2: #0d0d0d; --bg-3: #111; --bg-4: #1a1a1a;
+      --accent: #8B019F; --glow: #CF03F6;
+      --border: #2a2a2a; --border-hi: #3a3a3a;
+      --text: #fff; --text-2: #ccc; --text-3: #888;
+      --green: #22c55e; --yellow: #f59e0b; --blue: #60a5fa;
+      --code-bg: #0a0a0a; --radius: 10px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Be Vietnam Pro", system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+    /* Sidebar */
+    .sidebar { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: var(--bg-2); border-right: 1px solid var(--border); overflow-y: auto; z-index: 100; display: flex; flex-direction: column; }
+    .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }
+    .sidebar-logo img { height: 32px; }
+    .sidebar-title { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: .1em; text-transform: uppercase; padding: 20px 24px 8px; }
+    .nav-list { list-style: none; padding: 0 12px 32px; }
+    .nav-list li a { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 8px; color: var(--text-3); text-decoration: none; font-size: 13px; font-weight: 500; transition: all .15s; line-height: 1.3; }
+    .nav-list li a:hover { background: var(--bg-3); color: var(--text); }
+    .nav-list li a.active { background: rgba(139,1,159,.15); color: var(--glow); }
+    .nav-num { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background: var(--bg-4); border-radius: 5px; font-size: 11px; font-weight: 700; color: var(--text-3); flex-shrink: 0; }
+    .nav-list li a:hover .nav-num, .nav-list li a.active .nav-num { background: rgba(139,1,159,.3); color: var(--glow); }
+    .nav-group-label { font-size: 10px; font-weight: 700; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; padding: 14px 12px 4px; opacity: .6; }
+
+    /* Main */
+    .main { margin-left: 260px; min-height: 100vh; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #000 0%, #0d0020 50%, #0a0015 100%); border-bottom: 1px solid var(--border); padding: 64px 64px 56px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(139,1,159,.15) 0%, transparent 70%); pointer-events: none; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(139,1,159,.2); border: 1px solid rgba(207,3,246,.4); border-radius: 50px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--glow); letter-spacing: .05em; margin-bottom: 20px; }
+    .hero h1 { font-size: 38px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; background: linear-gradient(135deg,#fff 0%,#cf03f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 16px; color: var(--text-2); max-width: 560px; line-height: 1.6; }
+    .hero-meta { margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap; }
+    .hero-tag { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-3); }
+    .hero-tag span { color: var(--green); font-weight: 600; }
+
+    /* Content */
+    .content { padding: 0 64px 80px; }
+    .section { padding-top: 56px; }
+    .section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .section-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg,var(--accent),var(--glow)); border-radius: 10px; font-size: 15px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 2px; }
+    .section-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .section-desc { font-size: 14px; color: var(--text-3); }
+
+    /* Concept card */
+    .concepts { display: flex; flex-direction: column; gap: 20px; }
+    .concept { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color .2s; }
+    .concept:hover { border-color: var(--border-hi); }
+    .concept-head { padding: 20px 24px 14px; display: flex; align-items: flex-start; gap: 16px; }
+    .concept-icon { width: 42px; height: 42px; background: var(--bg-4); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .concept-name { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .concept-tag { display: inline-block; background: rgba(139,1,159,.15); border: 1px solid rgba(207,3,246,.25); color: var(--glow); font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 50px; letter-spacing: .04em; }
+    .concept-tag.green { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.25); color: #86efac; }
+    .concept-tag.blue  { background: rgba(96,165,250,.1); border-color: rgba(96,165,250,.25); color: #93c5fd; }
+    .concept-tag.yellow{ background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.25); color: #fcd34d; }
+    .concept-body { padding: 0 24px 22px; }
+
+    /* Analogy */
+    .analogy { background: var(--bg-3); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 14px; color: var(--text-2); margin-bottom: 14px; line-height: 1.65; }
+    .analogy-label { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+
+    /* Explain */
+    .explain { font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 14px; }
+    .explain strong { color: var(--text); }
+
+    /* Example box */
+    .example-box { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
+    .example-label { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+    .example-label::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+    .example-box p { font-size: 13px; color: var(--text-3); line-height: 1.65; }
+    .example-box p strong { color: var(--glow); }
+
+    /* Code block */
+    .code-block { margin-top: 12px; position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    .code-block pre { background: var(--code-bg); padding: 14px 48px 14px 16px; overflow-x: auto; font-family: "JetBrains Mono", monospace; font-size: 13px; line-height: 1.7; color: #e2e2e2; }
+    .code-block pre .c { color: #555; font-style: italic; }
+    .code-block pre .k { color: #cf03f6; }
+    .code-block pre .v { color: #86efac; }
+    .copy-btn { position: absolute; top: 8px; right: 8px; background: var(--bg-4); border: 1px solid var(--border-hi); color: var(--text-3); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; font-family: "Be Vietnam Pro", sans-serif; cursor: pointer; transition: all .15s; }
+    .copy-btn:hover { border-color: var(--accent); color: var(--glow); background: rgba(139,1,159,.1); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    /* Callout */
+    .callout { border-radius: var(--radius); padding: 12px 16px; margin-top: 14px; font-size: 13px; line-height: 1.65; display: flex; gap: 10px; }
+    .callout-icon { flex-shrink: 0; }
+    .callout.tip  { background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.2); color: #86efac; }
+    .callout.warn { background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2); color: #fcd34d; }
+    .callout.info { background: rgba(139,1,159,.07); border: 1px solid rgba(139,1,159,.25); color: #d8b4fe; }
+    .callout strong { color: inherit; }
+
+    code { background: var(--bg-4); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--glow); }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0 0; }
+
+    /* Checklist */
+    .checklist-section { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+    .checklist-head { padding: 18px 24px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .checklist-icon { font-size: 22px; }
+    .checklist-title { font-size: 16px; font-weight: 700; }
+    .checklist-sub { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+    .checklist-body { padding: 16px 24px 20px; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .check-item:last-child { border-bottom: none; }
+    .check-box { width: 20px; height: 20px; border: 2px solid var(--border-hi); border-radius: 5px; flex-shrink: 0; margin-top: 2px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .check-box:hover { border-color: var(--accent); }
+    .check-box.done { background: var(--accent); border-color: var(--accent); }
+    .check-box.done::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+    .check-text { flex: 1; }
+    .check-text strong { font-size: 14px; color: var(--text); display: block; margin-bottom: 2px; }
+    .check-text span { font-size: 13px; color: var(--text-3); }
+
+    /* Footer */
+    .footer { margin-left: 260px; padding: 28px 64px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+    .footer a { color: var(--glow); text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <img src="/api/branding/logo" alt="Agenci AI" onerror="this.style.display='none'">
+  </div>
+  <div class="sidebar-title">Słownik pojęć</div>
+  <nav>
+    <ul class="nav-list">
+      <li class="nav-group-label">Środowisko</li>
+      <li><a href="#s1"><span class="nav-num">1</span> Terminal</a></li>
+      <li><a href="#s2"><span class="nav-num">2</span> localhost i port</a></li>
+      <li><a href="#s3"><span class="nav-num">3</span> Node.js</a></li>
+      <li><a href="#s4"><span class="nav-num">4</span> npm i zależności</a></li>
+
+      <li class="nav-group-label">Pliki konfiguracyjne</li>
+      <li><a href="#s5"><span class="nav-num">5</span> Plik .env</a></li>
+      <li><a href="#s6"><span class="nav-num">6</span> Plik .gitignore</a></li>
+      <li><a href="#s7"><span class="nav-num">7</span> package.json</a></li>
+      <li><a href="#s8"><span class="nav-num">8</span> Markdown (.md)</a></li>
+      <li><a href="#s9"><span class="nav-num">9</span> CLAUDE.md</a></li>
+
+      <li class="nav-group-label">Git i GitHub</li>
+      <li><a href="#s10"><span class="nav-num">10</span> Git</a></li>
+      <li><a href="#s11"><span class="nav-num">11</span> Repozytorium</a></li>
+      <li><a href="#s12"><span class="nav-num">12</span> Commit</a></li>
+      <li><a href="#s13"><span class="nav-num">13</span> Branch</a></li>
+      <li><a href="#s14"><span class="nav-num">14</span> Push i Pull</a></li>
+      <li><a href="#s15"><span class="nav-num">15</span> GitHub</a></li>
+
+      <li class="nav-group-label">Wersjonowanie</li>
+      <li><a href="#s16"><span class="nav-num">16</span> Semantic Versioning</a></li>
+      <li><a href="#s17"><span class="nav-num">17</span> Tag git</a></li>
+      <li><a href="#s18"><span class="nav-num">18</span> CHANGELOG.md</a></li>
+
+      <li class="nav-group-label">Komunikacja</li>
+      <li><a href="#s19"><span class="nav-num">19</span> API</a></li>
+      <li><a href="#s20"><span class="nav-num">20</span> Klucz API</a></li>
+      <li><a href="#s21"><span class="nav-num">21</span> Endpoint</a></li>
+      <li><a href="#s22"><span class="nav-num">22</span> JSON</a></li>
+      <li><a href="#s23"><span class="nav-num">23</span> HTTP i HTTPS</a></li>
+
+      <li class="nav-group-label">Architektura</li>
+      <li><a href="#s24"><span class="nav-num">24</span> Frontend i Backend</a></li>
+      <li><a href="#s25"><span class="nav-num">25</span> Serwer</a></li>
+      <li><a href="#s26"><span class="nav-num">26</span> Baza danych i SQLite</a></li>
+      <li><a href="#s27"><span class="nav-num">27</span> Headless browser</a></li>
+
+      <li class="nav-group-label">Bezpieczeństwo</li>
+      <li><a href="#s28"><span class="nav-num">28</span> Zmienne środowiskowe</a></li>
+      <li><a href="#s29"><span class="nav-num">29</span> Co ukrywać przed GitHub</a></li>
+
+      <li class="nav-group-label">Dobre praktyki</li>
+      <li><a href="#checklist"><span class="nav-num">✓</span> Checklista</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <div class="hero">
+    <div class="hero-badge">📖 Agenci AI · Edukacja</div>
+    <h1>Słownik pojęć technicznych</h1>
+    <p class="hero-sub">29 pojęć z programowania i tworzenia aplikacji — wytłumaczonych prostym językiem, bez żargonu. Dla każdego kto buduje projekty z Claude Code.</p>
+    <div class="hero-meta">
+      <div class="hero-tag">📦 <span>29 pojęć</span></div>
+      <div class="hero-tag">✅ <span>checklista dobrych praktyk</span></div>
+      <div class="hero-tag">🎯 <span>poziom: zupełnie nietechniczny</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ ŚRODOWISKO ══ -->
+
+    <div class="section" id="s1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Terminal</div>
+          <div class="section-desc">Środowisko · Jak rozmawiać z komputerem tekstem</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🖥️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Terminal / wiersz poleceń</div>
+              <span class="concept-tag">Środowisko</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Zamiast klikać po menu restauracji na tablecie, mówisz kelnerowi wprost: „podwójne espresso, bez cukru". Terminal to właśnie to — piszesz komputerowi co ma zrobić, bez klikania po oknach. Szybciej i precyzyjniej.
+            </div>
+            <div class="explain">
+              Terminal to program w którym wpisujesz tekstowe polecenia. Komputer je wykonuje i pokazuje wynik jako tekst. Na macOS otworzysz go przez <strong>Cmd + Spacja</strong> i wpisując „Terminal".<br><br>
+              Większość pracy z kodem dzieje się właśnie tu — uruchamianie serwera, instalowanie bibliotek, wysyłanie na GitHub.
+            </div>
+            <div class="callout info">
+              <span class="callout-icon">💡</span>
+              <div>W Claude Code wpisz <code>! polecenie</code> — wykrzyknik uruchamia polecenie w terminalu bez wychodzenia z rozmowy z Claude.</div>
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Uruchamiasz serwer poleceniem <strong><code>npm start</code></strong>. Zatrzymujesz go przez <strong><code>pkill -f "node server.js"</code></strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">localhost i port</div>
+          <div class="section-desc">Środowisko · Twoja prywatna sieć</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🏠</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">localhost</div>
+              <span class="concept-tag blue">Sieć</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Numer wewnętrzny telefonu w biurze. Możesz zadzwonić na „200" i odebrać w pokoju obok — ale ten numer nie istnieje poza budynkiem. Nikt z zewnątrz nie może się połączyć. localhost działa tak samo — to adres istniejący tylko na Twoim komputerze.
+            </div>
+            <div class="explain">
+              <strong>localhost</strong> to specjalny adres oznaczający „ten komputer". Gdy wpisujesz <code>http://localhost:3777</code> w przeglądarce, nie łączysz się z internetem — rozmawiasz z programem działającym na Twoim własnym dysku. Nikt z zewnątrz tego nie widzi.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>LED Offer Studio działa pod <strong><code>http://localhost:3777</code></strong> — tylko na Twoim komputerze, kompletnie offline.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🚪</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Port</div>
+              <span class="concept-tag blue">Sieć</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Numer mieszkania w bloku. Blok (komputer) ma jeden adres, ale w środku jest wiele mieszkań (programów). Każde ma swój numer i każde „odbiera" tylko połączenia skierowane do niego.
+            </div>
+            <div class="explain">
+              Port to numer (0–65535) który identyfikuje konkretny program nasłuchujący na połączenia. Na jednym komputerze może działać wiele programów jednocześnie — każdy na innym porcie. Jeśli port jest już zajęty przez inny program, nowy nie może się uruchomić.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Serwer działa na porcie <strong>3777</strong>. Port 3000 był już zajęty przez inną aplikację — dlatego go zmieniliśmy. Sprawdzisz co zajmuje port: <code>lsof -ti:3777</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Node.js</div>
+          <div class="section-desc">Środowisko · Silnik aplikacji</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">⚙️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Node.js</div>
+              <span class="concept-tag">Środowisko</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              JavaScript to język. Przeglądarka (Chrome, Safari) rozumie ten język, ale tylko w kontekście stron www — jak aktor który gra wyłącznie w teatrze. Node.js to ten sam aktor, ale teraz może grać wszędzie — w kinie, na ulicy, w firmie. Kod może działać bezpośrednio na komputerze, bez przeglądarki.
+            </div>
+            <div class="explain">
+              <strong>Node.js</strong> to środowisko uruchomieniowe dla JavaScript poza przeglądarką. Dzięki niemu piszesz serwer, skrypty i narzędzia w tym samym języku co interfejs użytkownika. Instalujesz go raz przez Homebrew (<code>brew install node</code>) i używasz we wszystkich projektach.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Cała aplikacja to Node.js. Plik <strong><code>server.js</code></strong> to serce — uruchamiasz go przez <code>npm start</code>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">npm i zależności</div>
+          <div class="section-desc">Środowisko · Gotowe klocki do budowania</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📦</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">npm i zależności (dependencies)</div>
+              <span class="concept-tag">Narzędzie</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              App Store dla programistów. Zamiast pisać od zera kod do generowania PDF albo obsługi AI — pobierasz gotowy, przetestowany przez tysiące ludzi pakiet i go używasz. npm to ten sklep, a zależności to lista aplikacji które zainstalowałeś.
+            </div>
+            <div class="explain">
+              <strong>npm</strong> (Node Package Manager) to narzędzie do instalowania gotowych bibliotek. Jedno polecenie <code>npm install</code> pobiera wszystko czego projekt potrzebuje.<br><br>
+              Pobrane pakiety lądują w folderze <code>node_modules/</code> — może ważyć setki MB. Dlatego <strong>nigdy nie wrzucasz go na GitHub</strong> — jest w <code>.gitignore</code>. Każdy kto pobierze projekt, robi <code>npm install</code> i sam pobiera swoje kopie.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Używamy: <strong>express</strong> (serwer), <strong>puppeteer</strong> (PDF), <strong>openai</strong> (AI), <strong>dotenv</strong> (tajne klucze). Instalujesz wszystko jednym poleceniem: <code>npm install</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ PLIKI KONFIGURACYJNE ══ -->
+
+    <div class="section" id="s5">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">Plik .env</div>
+          <div class="section-desc">Pliki konfiguracyjne · Tajne ustawienia</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🔐</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">.env</div>
+              <span class="concept-tag yellow">Bezpieczeństwo</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Kartka z PINami do kart — trzymasz ją w zamkniętej szufladzie, osobno od portfela. Portfel (kod aplikacji) możesz gdzieś zostawić czy pokazać, ale kartka z PINami zostaje w szufladzie tylko u Ciebie.
+            </div>
+            <div class="explain">
+              Plik <strong>.env</strong> przechowuje tajne dane aplikacji: klucze API, hasła, adresy serwerów. Każda linia to para <code>NAZWA=wartość</code>. Aplikacja czyta je przez <code>process.env.NAZWA</code>.<br><br>
+              Ten plik <strong>nigdy nie trafia na GitHub</strong> — jest w <code>.gitignore</code>. Dzięki temu tajne dane nie są wpisane w kodzie i nie wyciekają przy udostępnianiu projektu.
+            </div>
+            <div class="code-block">
+              <pre><span class="c"># Plik .env — tylko na Twoim komputerze, nigdy na GitHub</span>
+<span class="k">OPENAI_API_KEY</span>=<span class="v">sk-proj-twój-tajny-klucz</span>
+<span class="k">OPENAI_MODEL</span>=<span class="v">gpt-4o-mini</span></pre>
+            </div>
+            <div class="callout warn">
+              <span class="callout-icon">⚠️</span>
+              <div>Jeśli klucz API wycieknie na GitHub — ktoś może używać Twojego konta OpenAI na Twój koszt. Jeśli to się stanie: natychmiast usuń klucz w panelu OpenAI i wygeneruj nowy.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Plik .gitignore</div>
+          <div class="section-desc">Pliki konfiguracyjne · Lista rzeczy do pominięcia</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🙈</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">.gitignore</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Karteczka „NIE PAKOWAĆ" przyklejona na rzeczy przy przeprowadzce. Firma przeprowadzkowa (Git) bierze wszystko — oprócz rzeczy z karteczką. Przyklejasz ją na: tajne pliki, dane klientów, gigantyczne foldery z bibliotekami.
+            </div>
+            <div class="explain">
+              Plik <strong>.gitignore</strong> to lista plików i folderów, których Git ma nie śledzić i nie wysyłać na GitHub. Każda linia to wzorzec nazwy. Raz skonfigurowany działa automatycznie — nie musisz za każdym razem pamiętać co pominąć.
+            </div>
+            <div class="code-block">
+              <pre><span class="c"># Plik .gitignore — Git ignoruje wszystko co tu wpisano</span>
+<span class="k">node_modules/</span>   <span class="c">← setki MB bibliotek, każdy instaluje sam</span>
+<span class="k">.env</span>            <span class="c">← klucze API i hasła</span>
+<span class="k">data/</span>           <span class="c">← baza danych z danymi klientów</span>
+<span class="k">Klienci/</span>        <span class="c">← dokumenty klientów</span>
+<span class="k">.DS_Store</span>       <span class="c">← systemowe śmieci macOS</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">package.json</div>
+          <div class="section-desc">Pliki konfiguracyjne · Dowód tożsamości projektu</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📋</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">package.json</div>
+              <span class="concept-tag">Konfiguracja</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Etykieta na pudełku z ciastem — mówi jak się nazywa, co jest w środku (składniki = zależności) i jak je podgrzać (skrypty = jak uruchomić). Każdy projekt Node.js ma tę etykietę.
+            </div>
+            <div class="explain">
+              <strong>package.json</strong> to plik w głównym folderze projektu zawierający: nazwę projektu, wersję, listę wymaganych bibliotek (zależności) i skrypty skrótowe.<br><br>
+              Gdy wpisujesz <code>npm start</code> — npm sprawdza w package.json co ma uruchomić. Gdy wpisujesz <code>npm install</code> — pobiera wszystkie biblioteki z listy zależności.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>W <strong><code>package.json</code></strong> jest zdefiniowane <code>"start": "node server.js"</code> — stąd <code>npm start</code> uruchamia serwer. Są też wymienione: express, puppeteer, openai, dotenv i inne.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <div>
+          <div class="section-title">Markdown (.md)</div>
+          <div class="section-desc">Pliki konfiguracyjne · Format dokumentacji</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📝</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Markdown</div>
+              <span class="concept-tag blue">Format</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Stenografia dla tekstu. Zamiast klikać „Pogrub" w Wordzie, piszesz <code>**słowo**</code> i jest pogrubione. Zamiast wstawiać nagłówek — piszesz <code># Tytuł</code>. Prosty zwykły tekst, który wygląda ładnie gdy go wyrenderujesz.
+            </div>
+            <div class="explain">
+              Pliki z rozszerzeniem <strong>.md</strong> to Markdown. GitHub automatycznie renderuje je jako sformatowane strony — dlatego prawie cała dokumentacja open-source jest w tym formacie. Claude Code też odpowiada w Markdown.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Cały folder <strong><code>dokumentacja/</code></strong> to pliki .md: README.md, API.md, DATABASE.md itd. GitHub wyświetla je jako czytelne strony w repozytorium.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <div>
+          <div class="section-title">CLAUDE.md</div>
+          <div class="section-desc">Pliki konfiguracyjne · Pamięć projektu dla Claude</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🧠</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">CLAUDE.md</div>
+              <span class="concept-tag">Claude Code</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Instrukcja przekazania obowiązków dla nowego pracownika. Każda sesja Claude Code to jak nowy dzień — Claude nie pamięta poprzedniej rozmowy. CLAUDE.md to notatka którą zostawiasz na biurku: „projekt nazywa się tak, serwer działa na tym porcie, używamy tego klucza, ostatnia wersja to v1.1.1".
+            </div>
+            <div class="explain">
+              <strong>CLAUDE.md</strong> to plik w głównym folderze projektu, który Claude Code czyta automatycznie przy każdym otwarciu nowej sesji. Dzięki niemu Claude od razu wie co to za projekt, jak go uruchomić, co jest zrobione i jak pracujemy.
+            </div>
+            <div class="callout tip">
+              <span class="callout-icon">✅</span>
+              <div>Po każdej sesji w której coś zmieniono — zaktualizuj CLAUDE.md. To 2 minuty pracy, które oszczędzają 20 minut tłumaczenia na początku każdej kolejnej sesji.</div>
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Plik <strong><code>CLAUDE.md</code></strong> w głównym folderze zawiera: aktualną wersję, port, tech stack, mapę plików, co jest wdrożone i zasady pracy z GitHubem.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ GIT I GITHUB ══ -->
+
+    <div class="section" id="s10">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div>
+          <div class="section-title">Git</div>
+          <div class="section-desc">Git i GitHub · Nieograniczone „cofnij"</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🕐</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Git — kontrola wersji</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Przycisk „Cofnij" w Wordzie, ale bez limitu kroków i z opisem każdej zmiany. Możesz cofnąć się do dokładnie tego momentu sprzed 3 tygodni kiedy wszystko działało — i zobaczyć co dokładnie wtedy było w każdym pliku.
+            </div>
+            <div class="explain">
+              <strong>Git</strong> to narzędzie śledzące historię zmian w plikach projektu. Działa lokalnie na Twoim komputerze. Sam decydujesz kiedy „zapisać" stan (commit) i kiedy wysłać na serwer (push). Daje poczucie bezpieczeństwa — zawsze możesz wrócić do poprzedniej działającej wersji.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s11">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div>
+          <div class="section-title">Repozytorium</div>
+          <div class="section-desc">Git i GitHub · Folder z pamięcią</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🗂️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Repozytorium (repo)</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Zwykły folder na projekty budowlane + pełne archiwum zdjęć z każdego etapu budowy. Nie tylko widzisz aktualny stan domu — widzisz jak wyglądał po każdym tygodniu pracy, kto co zmienił i dlaczego.
+            </div>
+            <div class="explain">
+              <strong>Repozytorium</strong> to folder projektu, w którym Git śledzi zmiany. Tworzy się je poleceniem <code>git init</code>. Git tworzy wtedy ukryty folder <code>.git/</code> — tam przechowuje całą historię. Repozytorium może być <strong>lokalne</strong> (tylko na Twoim dysku) lub <strong>zdalne</strong> (np. na GitHubie, jako backup).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s12">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <div>
+          <div class="section-title">Commit</div>
+          <div class="section-desc">Git i GitHub · Zapisana migawka z opisem</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📸</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Commit</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Kliknięcie „Zapisz" — ale do każdego zapisu dołączasz kartkę z notatką „co zmieniłem i dlaczego". Każda kartka ma datę i autora. Pół roku później możesz przejrzeć całą historię zapisów i znaleźć dokładnie ten w którym coś poszło nie tak.
+            </div>
+            <div class="explain">
+              <strong>Commit</strong> to zapisana migawka stanu wszystkich plików projektu w danym momencie. Każdy commit ma: unikalny ID, datę, autora i wiadomość opisującą co zrobiono.<br><br>
+              Zanim zapiszesz, dodajesz pliki do „poczekalni" (<code>git add</code>), potem zatwierdzasz (<code>git commit -m "opis"</code>).
+            </div>
+            <div class="code-block">
+              <pre><span class="c"># Dodaj zmienione pliki do poczekalni</span>
+git add server.js
+
+<span class="c"># Zapisz migawkę z opisem co i dlaczego</span>
+git commit -m <span class="v">"Napraw generowanie PDF — zmiana na system Chrome"</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s13">
+      <div class="section-header">
+        <div class="section-num">13</div>
+        <div>
+          <div class="section-title">Branch (gałąź)</div>
+          <div class="section-desc">Git i GitHub · Eksperymentuj bez ryzyka</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🌿</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Branch</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Notatnik z kartkami do wyrwania. Chcesz przetestować nowy pomysł? Piszesz go na osobnej kartce — nie w środku notatnika. Pomysł wyszedł? Wklejasz kartkę. Nie wyszedł? Wyrzucasz bez śladu.
+            </div>
+            <div class="explain">
+              <strong>Branch</strong> to odgałęzienie historii projektu — możesz pracować nad nową funkcją na osobnej gałęzi, nie ryzykując zepsucia działającej wersji. Główna gałąź to zazwyczaj <code>main</code>. W małych projektach z jednym deweloperem często pracuje się wyłącznie na <code>main</code>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s14">
+      <div class="section-header">
+        <div class="section-num">14</div>
+        <div>
+          <div class="section-title">Push i Pull</div>
+          <div class="section-desc">Git i GitHub · Synchronizacja z chmurą</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">↕️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">git push / git pull</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Synchronizacja zdjęć z iPhone na iCloud. <strong>Push</strong> = wyślij zdjęcia z telefonu do chmury. <strong>Pull</strong> = pobierz zdjęcia z chmury na nowy telefon. Twój komputer i GitHub to dwa urządzenia z tą samą „biblioteką" — musisz je synchronizować.
+            </div>
+            <div class="explain">
+              <strong>git push</strong> wysyła Twoje lokalne commity na GitHub — aktualizuje backup i udostępnia zmiany.<br>
+              <strong>git pull</strong> pobiera z GitHub zmiany których nie masz lokalnie — np. gdy pracujesz na dwóch komputerach.<br><br>
+              Ważne: push wysyła tylko commity. Najpierw musisz zrobić commit, potem push.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s15">
+      <div class="section-header">
+        <div class="section-num">15</div>
+        <div>
+          <div class="section-title">GitHub</div>
+          <div class="section-desc">Git i GitHub · iCloud dla kodu</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🐙</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">GitHub</div>
+              <span class="concept-tag green">Platforma</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Git to narzędzie (jak aparat fotograficzny), GitHub to miejsce do przechowywania i przeglądania zdjęć (jak iCloud Zdjęcia, ale dla kodu). Możesz mieć Git bez GitHuba — ale GitHub bez Gita nie ma sensu.
+            </div>
+            <div class="explain">
+              <strong>GitHub</strong> to serwis przechowujący repozytoria git w chmurze. Daje: bezpieczny backup kodu, dostęp z każdego komputera, historię zmian w przeglądarce, możliwość udostępniania. Repozytorium może być <strong>publiczne</strong> lub <strong>prywatne</strong>.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>LED Offer Studio ma prywatne repo na GitHub. Backup wysyłasz poleceniem <code>git push</code> — ale tylko kiedy Ty zdecydujesz, nie automatycznie.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ WERSJONOWANIE ══ -->
+
+    <div class="section" id="s16">
+      <div class="section-header">
+        <div class="section-num">16</div>
+        <div>
+          <div class="section-title">Semantic Versioning</div>
+          <div class="section-desc">Wersjonowanie · Numer wersji który coś znaczy</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🔢</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Semantic Versioning — MAJOR.MINOR.PATCH</div>
+              <span class="concept-tag blue">Wersjonowanie</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Numer wersji telefonu: iPhone <strong>15</strong>.<strong>2</strong>.<strong>1</strong>. Pierwsza cyfra = nowa generacja (duże zmiany). Druga = nowa funkcja (aktualizacja systemu). Trzecia = poprawka błędu (łatka bezpieczeństwa). Numer wersji jednym rzutem oka mówi jak duża była zmiana.
+            </div>
+            <div class="explain">
+              <strong>Semantic Versioning</strong> (semver) to standard numerowania wersji w formacie <code>MAJOR.MINOR.PATCH</code>:<br><br>
+              <strong>PATCH</strong> (np. 1.1.0 → 1.1.1) — poprawka błędu, zmiana konfiguracji<br>
+              <strong>MINOR</strong> (np. 1.0.0 → 1.1.0) — nowa funkcja, nic nie zepsute<br>
+              <strong>MAJOR</strong> (np. 1.0.0 → 2.0.0) — przepisanie aplikacji, duże zmiany
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Startowaliśmy od <strong>v1.0.0</strong>. Po dodaniu OpenAI, folderów klientów i naprawie PDF — przeszliśmy na <strong>v1.1.0</strong> (nowe funkcje). Po dodaniu CLAUDE.md i CHANGELOG.md — <strong>v1.1.1</strong> (drobna zmiana).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s17">
+      <div class="section-header">
+        <div class="section-num">17</div>
+        <div>
+          <div class="section-title">Tag git</div>
+          <div class="section-desc">Wersjonowanie · Zakładka w historii</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🏷️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Tag git</div>
+              <span class="concept-tag green">Git</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Zakładka z podpisem wklejona w konkretne miejsce w książce. Zamiast pamiętać że „wersja 1.1.0 to ten commit z 26 czerwca" — przyklejasz zakładkę z napisem „v1.1.0" i możesz do niej wrócić w każdej chwili.
+            </div>
+            <div class="explain">
+              <strong>Tag</strong> to nazwana etykieta przypisana do konkretnego commita w historii Gita. Używasz tagów do oznaczania wersji. Tagi wysyłasz na GitHub osobnym poleceniem.
+            </div>
+            <div class="code-block">
+              <pre><span class="c"># Utwórz tag dla aktualnego commita</span>
+git tag -a <span class="v">v1.2.0</span> -m <span class="v">"Dodaj nową funkcję X"</span>
+
+<span class="c"># Wyślij tagi na GitHub (osobno od git push)</span>
+git push --tags</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s18">
+      <div class="section-header">
+        <div class="section-num">18</div>
+        <div>
+          <div class="section-title">CHANGELOG.md</div>
+          <div class="section-desc">Wersjonowanie · Dziennik zmian projektu</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📓</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">CHANGELOG.md</div>
+              <span class="concept-tag blue">Wersjonowanie</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Dziennik budowy domu. „14 maja: wylano fundamenty. 28 maja: postawiono ściany. 10 czerwca: zamontowano okna." Za rok wiesz co, kiedy i dlaczego zostało zmienione — bez grzebania w setkach commitów.
+            </div>
+            <div class="explain">
+              <strong>CHANGELOG.md</strong> to plik w głównym folderze projektu, w którym opisujesz co zmieniło się w każdej wersji. Piszesz go ręcznie (lub Claude go aktualizuje) przy każdym nowym tagu. Kategoryzujesz zmiany: Dodano / Naprawiono / Zmieniono / Usunięto.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Plik <strong><code>CHANGELOG.md</code></strong> opisuje co było w v1.0.0, co dodano/naprawiono w v1.1.0, co w v1.1.1. Aktualizujesz go przy każdej nowej wersji razem z CLAUDE.md.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ KOMUNIKACJA ══ -->
+
+    <div class="section" id="s19">
+      <div class="section-header">
+        <div class="section-num">19</div>
+        <div>
+          <div class="section-title">API</div>
+          <div class="section-desc">Komunikacja · Jak programy rozmawiają ze sobą</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🔌</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">API — Application Programming Interface</div>
+              <span class="concept-tag blue">Komunikacja</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Menu w restauracji. Nie wchodzisz do kuchni i nie gotujesz sam. Patrzysz w menu (API), zamawiasz „raport z tego tygodnia", kuchnia (serwer OpenAI) przygotowuje i przynosi gotowe. Nie musisz wiedzieć jak działa kuchnia — tylko co możesz zamówić i jak.
+            </div>
+            <div class="explain">
+              <strong>API</strong> to zestaw zasad określający jak jeden program może komunikować się z drugim. Twoja aplikacja wysyła zapytanie do API OpenAI (zamówienie), OpenAI przetwarza je i odsyła odpowiedź (danie). API może być wewnętrzne (frontend ↔ backend tej samej aplikacji) lub zewnętrzne (do obcych serwisów).
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>LED Offer Studio ma własne API (<code>GET /api/clients</code> = pobierz klientów) i używa zewnętrznego API OpenAI do generowania raportów AI.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s20">
+      <div class="section-header">
+        <div class="section-num">20</div>
+        <div>
+          <div class="section-title">Klucz API</div>
+          <div class="section-desc">Komunikacja · Karta członkowska do zewnętrznych usług</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🗝️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">API Key — klucz API</div>
+              <span class="concept-tag yellow">Bezpieczeństwo</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Karta członkowska klubu. Okazujesz ją przy każdym wejściu — klub wie kto wchodzi i nalicza opłaty na właściwe konto. Jeśli zgubisz kartę i ktoś ją znajdzie — wchodzi zamiast Ciebie i rachunek płacisz Ty.
+            </div>
+            <div class="explain">
+              <strong>Klucz API</strong> to długi, unikalny ciąg znaków który dołączasz do każdego zapytania do zewnętrznej usługi. Usługa wie dzięki niemu kto wysyła zapytanie i czy ma prawo to robić. Klucze są tajne — trzymasz je wyłącznie w pliku <code>.env</code>.
+            </div>
+            <div class="callout warn">
+              <span class="callout-icon">⚠️</span>
+              <div>Nigdy nie wklejaj klucza API w kod. Nigdy nie wysyłaj go na GitHub. Jeśli wycieknie — natychmiast go unieważnij w panelu usługi i wygeneruj nowy.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s21">
+      <div class="section-header">
+        <div class="section-num">21</div>
+        <div>
+          <div class="section-title">Endpoint</div>
+          <div class="section-desc">Komunikacja · Numer telefonu do konkretnego działu</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📍</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Endpoint / REST</div>
+              <span class="concept-tag blue">Komunikacja</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Numer telefonu do konkretnego działu firmy. <code>/api/clients</code> to „dział obsługi klientów", <code>/api/pdf</code> to „dział dokumentów". Dzwonisz pod konkretny numer (endpoint) i dostajesz konkretną usługę. Metoda HTTP (GET/POST) to jak kierunek — „chcę pobrać" albo „chcę dodać".
+            </div>
+            <div class="explain">
+              <strong>Endpoint</strong> to konkretny adres URL + metoda HTTP, pod którym można wykonać akcję:<br><br>
+              <strong>GET</strong> — pobierz dane &nbsp;·&nbsp; <strong>POST</strong> — dodaj nowe &nbsp;·&nbsp; <strong>PUT/PATCH</strong> — zmień istniejące &nbsp;·&nbsp; <strong>DELETE</strong> — usuń
+            </div>
+            <div class="code-block">
+              <pre><span class="c"># Przykłady endpointów w tej aplikacji:</span>
+GET  /api/clients     <span class="c">← lista klientów</span>
+POST /api/clients     <span class="c">← dodaj klienta</span>
+GET  /api/clients/5   <span class="c">← konkretny klient</span>
+POST /api/ai/report   <span class="c">← generuj raport AI</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s22">
+      <div class="section-header">
+        <div class="section-num">22</div>
+        <div>
+          <div class="section-title">JSON</div>
+          <div class="section-desc">Komunikacja · Wspólny język danych</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">📄</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">JSON</div>
+              <span class="concept-tag blue">Format danych</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Formularz z polami. Zamiast pisać „Jan ma 35 lat i mieszka w Krakowie" (trudno przetworzyć automatycznie), wpisujesz dane w pola: Imię: Jan, Wiek: 35, Miasto: Kraków. Każdy program na świecie umie taki formularz odczytać i zrozumieć.
+            </div>
+            <div class="explain">
+              <strong>JSON</strong> to format tekstowy do przesyłania danych między programami. Pary klucz-wartość w nawiasach klamrowych. To de facto standard komunikacji przez API.
+            </div>
+            <div class="code-block">
+              <pre><span class="c">// Przykładowy JSON — dane klienta</span>
+{
+  <span class="k">"id"</span>: <span class="v">5</span>,
+  <span class="k">"name"</span>: <span class="v">"Magazyn Logistics Park"</span>,
+  <span class="k">"city"</span>: <span class="v">"Kraków"</span>,
+  <span class="k">"active"</span>: <span class="v">true</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s23">
+      <div class="section-header">
+        <div class="section-num">23</div>
+        <div>
+          <div class="section-title">HTTP i HTTPS</div>
+          <div class="section-desc">Komunikacja · Protokół internetu</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🌐</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">HTTP / HTTPS</div>
+              <span class="concept-tag blue">Protokół</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              HTTP to kartka pocztowa — każdy kto ją widzi po drodze może ją przeczytać. HTTPS to list w zaklejonej kopercie — zaszyfrowany, tylko adresat otwiera. Ta sama wiadomość, ale zupełnie inna ochrona.
+            </div>
+            <div class="explain">
+              <strong>HTTP</strong> to protokół komunikacji między przeglądarką a serwerem — zasady wymiany danych w internecie. <strong>HTTPS</strong> to szyfrowana wersja (S = Secure). Lokalna aplikacja działa na <code>http://</code> — szyfrowanie nie jest potrzebne gdy rozmawiasz sam ze sobą. Publiczne aplikacje w internecie używają zawsze <code>https://</code>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ ARCHITEKTURA ══ -->
+
+    <div class="section" id="s24">
+      <div class="section-header">
+        <div class="section-num">24</div>
+        <div>
+          <div class="section-title">Frontend i Backend</div>
+          <div class="section-desc">Architektura · Witryna i kuchnia</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🏗️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Frontend vs Backend</div>
+              <span class="concept-tag">Architektura</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Sklep. <strong>Frontend</strong> = witryna sklepowa, ekspozycja, kasa — to co widzi klient i z czym wchodzi w interakcję. <strong>Backend</strong> = magazyn, biuro rachunkowe, system zamówień — niewidoczne dla klienta, ale tam dzieje się prawdziwa praca.
+            </div>
+            <div class="explain">
+              <strong>Frontend</strong> to kod działający <em>w przeglądarce</em> — wszystko co widzisz i klikasz. Pliki HTML, CSS, JavaScript.<br><br>
+              <strong>Backend</strong> to kod działający <em>na serwerze</em> — przetwarza dane, zapisuje do bazy, generuje PDF, komunikuje się z OpenAI. Użytkownik go nie widzi.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p><strong>Frontend</strong>: folder <code>public/</code> — HTML, CSS, JS działający w Twojej przeglądarce.<br><strong>Backend</strong>: <code>server.js</code> — Node.js który odpowiada na zapytania, zarządza bazą i generuje PDFy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s25">
+      <div class="section-header">
+        <div class="section-num">25</div>
+        <div>
+          <div class="section-title">Serwer</div>
+          <div class="section-desc">Architektura · Program który czeka i odpowiada</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🖧</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Serwer</div>
+              <span class="concept-tag">Architektura</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Recepcjonista w hotelu. Siedzi i czeka na gości (zapytania). Gdy ktoś przychodzi — odbiera, przetwarza prośbę i odpowiada. Może obsługiwać wielu gości jednocześnie.
+            </div>
+            <div class="explain">
+              <strong>Serwer</strong> to program który <em>nasłuchuje</em> na połączenia i odpowiada na nie. W tej aplikacji serwerem jest Express.js działający na porcie 3777 — odpowiada na każde zapytanie przeglądarki. Słowo „serwer" może też oznaczać fizyczny komputer, ale w kontekście aplikacji webowych chodzi zwykle o <em>program</em>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s26">
+      <div class="section-header">
+        <div class="section-num">26</div>
+        <div>
+          <div class="section-title">Baza danych i SQLite</div>
+          <div class="section-desc">Architektura · Gdzie mieszkają dane</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🗄️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Baza danych / SQLite</div>
+              <span class="concept-tag">Architektura</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Excel z wieloma arkuszami, ale o wiele szybszy i bardziej niezawodny. Możesz wpisać pytanie i w ułamku sekundy dostać odpowiedź z tysięcy wierszy. <strong>SQLite</strong> to wersja Excela zmieszczona w jednym pliku na Twoim dysku — bez żadnego dodatkowego serwera.
+            </div>
+            <div class="explain">
+              <strong>Baza danych</strong> przechowuje dane w tabelach (jak arkusze Excela) i pozwala je błyskawicznie wyszukiwać przez język SQL. <strong>SQLite</strong> to lekka baza trzymająca wszystko w jednym pliku <code>.sqlite</code> — idealna do małych aplikacji lokalnych.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Cała baza to jeden plik: <strong><code>data/database.sqlite</code></strong>. Zawiera 6 tabel: klienci, cennik, kalkulacje, warianty, raporty, ustawienia. Plik jest w <code>.gitignore</code> — nie trafia na GitHub.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s27">
+      <div class="section-header">
+        <div class="section-num">27</div>
+        <div>
+          <div class="section-title">Headless browser / Puppeteer</div>
+          <div class="section-desc">Architektura · Niewidzialna przeglądarka sterowana przez kod</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">👻</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Headless browser</div>
+              <span class="concept-tag">Architektura</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Robot który otwiera Chrome, wchodzi na stronę i robi zrzut ekranu — wszystko w tle, bez ekranu, szybciej niż człowiek. Nie widzisz okna przeglądarki, ale Chrome działa i wykonuje polecenia z kodu.
+            </div>
+            <div class="explain">
+              <strong>Headless browser</strong> to przeglądarka bez interfejsu graficznego — działa w tle, sterowana przez kod. <strong>Puppeteer</strong> to biblioteka Node.js do sterowania Chrome w trybie headless. Główne zastosowanie: generowanie PDF z szablonu HTML.
+            </div>
+            <div class="example-box">
+              <div class="example-label">W tej aplikacji</div>
+              <p>Generowanie PDF: serwer tworzy HTML raportu → Puppeteer otwiera go w systemowym Chrome → drukuje do PDF → zapisuje w folderze klienta. Dlatego <strong>Google Chrome musi być zainstalowany</strong> na macOS.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ BEZPIECZEŃSTWO ══ -->
+
+    <div class="section" id="s28">
+      <div class="section-header">
+        <div class="section-num">28</div>
+        <div>
+          <div class="section-title">Zmienne środowiskowe</div>
+          <div class="section-desc">Bezpieczeństwo · process.env</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">⚗️</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Zmienne środowiskowe / process.env</div>
+              <span class="concept-tag yellow">Bezpieczeństwo</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Ustawienia regionalne telefonu. Sam telefon (aplikacja) jest taki sam dla każdego — ale ustawienia (język, konto, strefa czasowa) są inne na każdym urządzeniu. Zmienne środowiskowe to właśnie te ustawienia: ten sam kod, ale inne tajne dane zależnie od tego gdzie działa.
+            </div>
+            <div class="explain">
+              <strong>Zmienne środowiskowe</strong> to wartości konfiguracyjne przekazywane do aplikacji z zewnątrz — spoza kodu. W Node.js dostępne są przez obiekt <code>process.env</code>. Pakiet <code>dotenv</code> ładuje je z pliku <code>.env</code> automatycznie przy starcie.
+            </div>
+            <div class="code-block">
+              <pre><span class="c">// Tak aplikacja czyta tajne dane (server.js):</span>
+<span class="k">const</span> apiKey = process.env.<span class="v">OPENAI_API_KEY</span>;
+<span class="c">// Wartość pochodzi z .env — nigdy z kodu wprost</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s29">
+      <div class="section-header">
+        <div class="section-num">29</div>
+        <div>
+          <div class="section-title">Co ukrywać przed GitHubem</div>
+          <div class="section-desc">Bezpieczeństwo · Żelazne zasady</div>
+        </div>
+      </div>
+      <div class="concepts">
+        <div class="concept">
+          <div class="concept-head">
+            <div class="concept-icon">🔒</div>
+            <div class="concept-title-wrap">
+              <div class="concept-name">Czego nie wrzucać na GitHub — nigdy</div>
+              <span class="concept-tag yellow">Bezpieczeństwo</span>
+            </div>
+          </div>
+          <div class="concept-body">
+            <div class="analogy">
+              <div class="analogy-label">Analogia</div>
+              Nie zostawiasz kluczy do domu na wycieraczce — nawet jeśli sąsiedzi są uczciwi. Klucze API i hasła to klucze do Twoich kont i kont klientów. GitHub to wycieraczka.
+            </div>
+            <div class="callout warn">
+              <span class="callout-icon">🚫</span>
+              <div>
+                <strong>Nigdy nie commituj:</strong><br>
+                • Pliku <code>.env</code> (klucze API, hasła)<br>
+                • Bazy danych z danymi klientów (<code>data/</code>)<br>
+                • Dokumentów klientów (<code>Klienci/</code>)<br>
+                • Certyfikatów i tokenów dostępu<br>
+                • Folderu <code>node_modules/</code>
+              </div>
+            </div>
+            <div class="callout tip">
+              <span class="callout-icon">✅</span>
+              <div>
+                <strong>Bezpiecznie na GitHub:</strong><br>
+                • Kod aplikacji (<code>server.js</code>, <code>public/</code>)<br>
+                • Dokumentacja (<code>README.md</code>, <code>CLAUDE.md</code>, <code>CHANGELOG.md</code>)<br>
+                • Plik <code>.gitignore</code> i <code>package.json</code><br>
+                • Szablon <code>.env.example</code> — bez prawdziwych wartości
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ══ CHECKLISTA ══ -->
+
+    <div class="section" id="checklist">
+      <div class="section-header">
+        <div class="section-num">✓</div>
+        <div>
+          <div class="section-title">Checklista dobrych praktyk</div>
+          <div class="section-desc">Budowa projektu · GitHub · Dokumentacja z Claude Code</div>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-head">
+          <div class="checklist-icon">🏗️</div>
+          <div>
+            <div class="checklist-title">Budowa projektu z Claude Code</div>
+            <div class="checklist-sub">Co zrobić zanim i w trakcie budowania aplikacji</div>
+          </div>
+        </div>
+        <div class="checklist-body">
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Określ cel projektu przed pierwszą linią kodu</strong>
+              <span>Powiedz Claude czemu ma służyć aplikacja, dla kogo i jak mniej więcej powinna wyglądać. Im konkretniej, tym lepiej.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Utwórz plik .gitignore jako jeden z pierwszych</strong>
+              <span>Zanim cokolwiek wyślesz na GitHub, upewnij się że .env, node_modules/ i dane klientów są w .gitignore.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Trzymaj klucze API wyłącznie w pliku .env</strong>
+              <span>Nigdy nie wpisuj kluczy bezpośrednio w kod. Jeśli Claude zaproponuje inaczej — powiedz mu żeby użył .env.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Testuj po każdej większej zmianie</strong>
+              <span>Nie czekaj aż Claude zrobi 10 rzeczy naraz. Proś o zmiany krok po kroku i sprawdzaj po każdej czy działa.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Pytaj Claude o wyjaśnienie każdej ważnej decyzji</strong>
+              <span>„Dlaczego wybrałeś SQLite zamiast MySQL?" „Co to znaczy że zmieniam port?" — to Twój projekt, powinieneś rozumieć kluczowe wybory.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Utwórz CLAUDE.md na początku projektu</strong>
+              <span>Poproś Claude o stworzenie CLAUDE.md po pierwszej roboczej wersji aplikacji. Każda kolejna sesja zacznie się od tego pliku.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-head">
+          <div class="checklist-icon">🐙</div>
+          <div>
+            <div class="checklist-title">Wysyłanie projektu na GitHub</div>
+            <div class="checklist-sub">Co sprawdzić zanim klikniesz „wyślij"</div>
+          </div>
+        </div>
+        <div class="checklist-body">
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Sprawdź co Git widzi: git status</strong>
+              <span>Uruchom <code>git status</code> i przejrzyj listę plików gotowych do commita. Czy są tam rzeczy które nie powinny trafić na GitHub?</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Upewnij się że .env i dane klientów są w .gitignore</strong>
+              <span>Jeśli widzisz .env lub data/ w git status jako „do dodania" — zatrzymaj się i dodaj je do .gitignore zanim cokolwiek wyślesz.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Napisz sensowny opis commita</strong>
+              <span>„update" to zły opis. „Dodaj integrację z OpenAI — raport tygodniowy" to dobry. Za rok będziesz wdzięczny sobie za konkretne opisy.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Dodaj tag wersji przy ważniejszych zmianach</strong>
+              <span><code>git tag -a v1.2.0 -m "Dodaj funkcję X"</code> — oznacz commit numerem wersji. Tagi wysyłasz osobno: <code>git push --tags</code></span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Zaktualizuj CHANGELOG.md przed wysłaniem</strong>
+              <span>Dopisz w CHANGELOG.md co zmieniło się w nowej wersji. To 5 minut które sprawią że za rok będziesz wiedział co, kiedy i dlaczego.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Wyślij kiedy TY zdecydujesz — nie automatycznie</strong>
+              <span>Claude może commitować lokalnie, ale <code>git push</code> to Twoja decyzja. Zawsze możesz przejrzeć co idzie na GitHub zanim faktycznie wyślesz.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-section">
+        <div class="checklist-head">
+          <div class="checklist-icon">📚</div>
+          <div>
+            <div class="checklist-title">Dokumentacja z Claude Code</div>
+            <div class="checklist-sub">Jak utrzymać projekt w dobrym porządku długoterminowo</div>
+          </div>
+        </div>
+        <div class="checklist-body">
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>CLAUDE.md — aktualizuj po każdej sesji z nowymi funkcjami</strong>
+              <span>Zmień numer wersji, dopisz co zostało dodane, zaktualizuj mapę plików jeśli pojawiły się nowe. Claude będzie wiedział od czego zacząć w następnej sesji.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>CHANGELOG.md — opisuj zmiany w każdej wersji</strong>
+              <span>Format: Dodano / Naprawiono / Zmieniono / Usunięto. Nie musisz opisywać każdego commita — wystarczy podsumowanie dla każdej wersji (tagu).</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>README.md — podstawowa instrukcja dla nowej osoby</strong>
+              <span>Jak zainstalować, jak uruchomić, gdzie są dane. Jeśli ktoś pobierze projekt — README powinien wystarczyć żeby go uruchomić.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Dokumentuj decyzje techniczne — nie tylko co, ale dlaczego</strong>
+              <span>„Używamy systemowego Chrome bo Chromium z Puppeteer był blokowany przez macOS" — taka notatka w CLAUDE.md jest bezcenna gdy po 3 miesiącach wracasz do projektu.</span>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('done')"></div>
+            <div class="check-text">
+              <strong>Poproś Claude o aktualizację dokumentacji razem z kodem</strong>
+              <span>Przy zlecaniu nowej funkcji dodaj: „i zaktualizuj CLAUDE.md oraz CHANGELOG.md". Dokumentacja pisana razem z kodem jest zawsze aktualna.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider" style="margin-bottom: 40px;">
+
+  </div>
+
+  <footer class="footer">
+    <div>© 2024 <a href="https://agenciai.pl" target="_blank">Agenci AI</a> · Słownik pojęć technicznych</div>
+    <div>Wróć do: <a href="/">LED Offer Studio</a> · <a href="/github-guide.html">Przewodnik GitHub</a></div>
+  </footer>
+
+</main>
+
+<script>
+  // Scroll-spy
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.nav-list a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.getAttribute('id');
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Copy buttons for code blocks
+  document.querySelectorAll('.code-block').forEach(block => {
+    const pre = block.querySelector('pre');
+    if (!pre) return;
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Kopiuj';
+    block.appendChild(btn);
+    btn.addEventListener('click', () => {
+      const lines = pre.innerText.split('\n')
+        .filter(l => l.trim() && !l.trim().startsWith('#') && !l.trim().startsWith('//'))
+        .join('\n');
+      navigator.clipboard.writeText(lines.trim()).then(() => {
+        btn.textContent = 'Skopiowano!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Kopiuj'; btn.classList.remove('copied'); }, 2000);
+      });
+    });
+  });
+</script>
+</body>
+</html>
