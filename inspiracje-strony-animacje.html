@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inspiracje: strony, animacje i SEO · Agenci AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #000; --bg-2: #0d0d0d; --bg-3: #111; --bg-4: #1a1a1a;
+      --accent: #8B019F; --glow: #CF03F6;
+      --border: #2a2a2a; --border-hi: #3a3a3a;
+      --text: #fff; --text-2: #ccc; --text-3: #888;
+      --green: #22c55e; --yellow: #f59e0b; --blue: #60a5fa;
+      --radius: 10px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Be Vietnam Pro", system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+    /* Sidebar */
+    .sidebar { position: fixed; top: 0; left: 0; width: 264px; height: 100vh; background: var(--bg-2); border-right: 1px solid var(--border); overflow-y: auto; z-index: 100; display: flex; flex-direction: column; }
+    .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .sidebar-logo .mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--glow)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
+    .sidebar-logo .word { font-weight: 700; font-size: 17px; letter-spacing: -.01em; }
+    .sidebar-logo .word sup { color: var(--glow); font-size: 10px; }
+    .sidebar-title { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: .1em; text-transform: uppercase; padding: 20px 24px 8px; }
+    .nav-list { list-style: none; padding: 0 12px 32px; }
+    .nav-list li a { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 8px; color: var(--text-3); text-decoration: none; font-size: 13px; font-weight: 500; transition: all .15s; line-height: 1.3; }
+    .nav-list li a:hover { background: var(--bg-3); color: var(--text); }
+    .nav-list li a.active { background: rgba(139,1,159,.15); color: var(--glow); }
+    .nav-num { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background: var(--bg-4); border-radius: 5px; font-size: 11px; font-weight: 700; color: var(--text-3); flex-shrink: 0; }
+    .nav-list li a:hover .nav-num, .nav-list li a.active .nav-num { background: rgba(139,1,159,.3); color: var(--glow); }
+    .nav-group-label { font-size: 10px; font-weight: 700; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; padding: 14px 12px 4px; opacity: .6; }
+
+    /* Main */
+    .main { margin-left: 264px; min-height: 100vh; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #000 0%, #0d0020 50%, #0a0015 100%); border-bottom: 1px solid var(--border); padding: 64px 64px 56px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(139,1,159,.16) 0%, transparent 70%); pointer-events: none; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(139,1,159,.2); border: 1px solid rgba(207,3,246,.4); border-radius: 50px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--glow); letter-spacing: .05em; margin-bottom: 20px; }
+    .hero h1 { font-size: 38px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; background: linear-gradient(135deg,#fff 0%,#cf03f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; max-width: 720px; }
+    .hero-sub { font-size: 16px; color: var(--text-2); max-width: 620px; line-height: 1.6; }
+    .hero-meta { margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap; }
+    .hero-tag { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-3); }
+    .hero-tag span { color: var(--green); font-weight: 600; }
+
+    /* Content */
+    .content { padding: 0 64px 80px; }
+    .section { padding-top: 56px; }
+    .section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .section-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg,var(--accent),var(--glow)); border-radius: 10px; font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .section-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .section-desc { font-size: 14px; color: var(--text-3); }
+
+    /* Cards grid */
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .card { scroll-margin-top: 24px; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color .2s, transform .2s; display: flex; flex-direction: column; }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-head { padding: 20px 22px 12px; display: flex; align-items: flex-start; gap: 14px; }
+    .card-icon { width: 44px; height: 44px; background: var(--bg-4); border: 1px solid var(--border); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+    .card-name { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 5px; line-height: 1.25; }
+    .card-tag { display: inline-block; background: rgba(139,1,159,.15); border: 1px solid rgba(207,3,246,.25); color: var(--glow); font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 50px; letter-spacing: .03em; }
+    .card-tag.green { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.25); color: #86efac; }
+    .card-tag.blue  { background: rgba(96,165,250,.1); border-color: rgba(96,165,250,.25); color: #93c5fd; }
+    .card-tag.yellow{ background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.25); color: #fcd34d; }
+    .card-body { padding: 0 22px 18px; flex: 1; display: flex; flex-direction: column; }
+    .card-desc { font-size: 14px; color: var(--text-2); line-height: 1.65; margin-bottom: 12px; }
+    .card-desc strong { color: var(--text); }
+
+    .card-link { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; background: var(--accent); color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 50px; transition: background .15s, box-shadow .15s; }
+    .card-link:hover { background: var(--glow); box-shadow: 0 0 18px rgba(207,3,246,.35); }
+    .card-link .arrow { transition: transform .15s; }
+    .card-link:hover .arrow { transform: translateX(3px); }
+    .card-url { font-size: 11px; color: var(--text-3); font-family: "JetBrains Mono", monospace; margin-top: 10px; word-break: break-all; }
+
+    /* Callout */
+    .callout { border-radius: var(--radius); padding: 14px 18px; margin: 24px 0 0; font-size: 13px; line-height: 1.65; display: flex; gap: 12px; }
+    .callout-icon { flex-shrink: 0; font-size: 18px; }
+    .callout.info { background: rgba(139,1,159,.07); border: 1px solid rgba(139,1,159,.25); color: #d8b4fe; }
+    .callout.tip  { background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.2); color: #86efac; }
+    .callout strong { color: #fff; }
+
+    /* Footer */
+    .footer { margin-left: 264px; padding: 28px 64px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 13px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer a { color: var(--glow); text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    @media (max-width: 1080px) { .cards { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) {
+      .sidebar { display: none; }
+      .main, .footer { margin-left: 0; }
+      .hero, .content, .footer { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="mark">A</div>
+    <div class="word">Agenci<sup>AI</sup></div>
+  </div>
+  <div class="sidebar-title">Inspiracje</div>
+  <nav>
+    <ul class="nav-list">
+      <li class="nav-group-label">Strony i UI</li>
+      <li><a href="#s1"><span class="nav-num">1</span> Dribbble</a></li>
+      <li><a href="#s2"><span class="nav-num">2</span> Land-book</a></li>
+      <li><a href="#s3"><span class="nav-num">3</span> byq.supply</a></li>
+      <li><a href="#s4"><span class="nav-num">4</span> Awwwards</a></li>
+
+      <li class="nav-group-label">Animacje i ruch</li>
+      <li><a href="#s5"><span class="nav-num">5</span> 60fps.design</a></li>
+      <li><a href="#s6"><span class="nav-num">6</span> Ripplix</a></li>
+      <li><a href="#s7"><span class="nav-num">7</span> Motion.dev</a></li>
+
+      <li class="nav-group-label">Narzędzia AI do SEO</li>
+      <li><a href="#s8"><span class="nav-num">8</span> NeuronWriter</a></li>
+      <li><a href="#s9"><span class="nav-num">9</span> Semrush</a></li>
+      <li><a href="#s10"><span class="nav-num">10</span> Ahrefs</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <div class="hero">
+    <div class="hero-badge">🎨 Agenci AI · Materiał do kursu</div>
+    <h1>Inspiracje: strony, animacje i SEO</h1>
+    <p class="hero-sub">Lista miejsc, z których czerpiesz pomysły na design stron, UI i animacje — plus narzędzia AI do SEO. Zanim zaczniesz budować, zobacz, jak robią to najlepsi. Każda pozycja ma krótki opis i wskazówkę, do czego konkretnie się przyda.</p>
+    <div class="hero-meta">
+      <div class="hero-tag">🔗 <span>10 sprawdzonych źródeł</span></div>
+      <div class="hero-tag">🎬 <span>strony · UI · animacje</span></div>
+      <div class="hero-tag">🤖 <span>3 narzędzia AI do SEO</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ STRONY I UI ══ -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">🖥️</div>
+        <div>
+          <div class="section-title">Inspiracje: strony i UI</div>
+          <div class="section-desc">Galerie projektów, layoutów i całych stron. Tu szukasz pomysłów na układ, kolory i sekcje.</div>
+        </div>
+      </div>
+
+      <div class="cards">
+
+        <div class="card" id="s1">
+          <div class="card-head">
+            <div class="card-icon">🏀</div>
+            <div>
+              <div class="card-name">Dribbble</div>
+              <span class="card-tag">Galeria projektów</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Największa na świecie galeria pracy projektantów.</strong> Widok „web design / popular" pokazuje najczęściej lajkowane projekty stron i interfejsów. Świetne na szybki research kolorów, hero, kart i całych sekcji.</p>
+            <a class="card-link" href="https://dribbble.com/shots/popular/web-design" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">dribbble.com/shots/popular/web-design</div>
+          </div>
+        </div>
+
+        <div class="card" id="s2">
+          <div class="card-head">
+            <div class="card-icon">📚</div>
+            <div>
+              <div class="card-name">Land-book</div>
+              <span class="card-tag">Galeria landingów</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Galeria prawdziwych, działających landing page'y.</strong> Pogrupowana po branży, stylu i kolorze. W przeciwieństwie do Dribbble pokazuje całe strony, a nie pojedyncze grafiki — widzisz, jak wygląda kompletny layout od góry do dołu.</p>
+            <a class="card-link" href="https://land-book.com/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">land-book.com</div>
+          </div>
+        </div>
+
+        <div class="card" id="s3">
+          <div class="card-head">
+            <div class="card-icon">✨</div>
+            <div>
+              <div class="card-name">byq.supply</div>
+              <span class="card-tag">Topowy craft</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Przykład strony z najwyższej półki.</strong> Nowoczesny, dopracowany design z mocnymi animacjami i dbałością o detal. To nie galeria — to punkt odniesienia: tak wygląda strona, gdy ktoś naprawdę wie, co robi.</p>
+            <a class="card-link" href="https://www.byq.supply/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">byq.supply</div>
+          </div>
+        </div>
+
+        <div class="card" id="s4">
+          <div class="card-head">
+            <div class="card-icon">🏆</div>
+            <div>
+              <div class="card-name">Awwwards</div>
+              <span class="card-tag">Nagradzane strony</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Serwis nagradzający najlepsze strony świata.</strong> Filtr „animation" pokazuje strony, które dostały wyróżnienie głównie dzięki ruchowi i interakcjom. Najwyższy poziom — czasem przekombinowany, ale zawsze inspirujący.</p>
+            <a class="card-link" href="https://www.awwwards.com/websites/animation/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">awwwards.com/websites/animation</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ ANIMACJE I RUCH ══ -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">🎬</div>
+        <div>
+          <div class="section-title">Inspiracje: animacje i ruch</div>
+          <div class="section-desc">Konkretne mikrointerakcje, przejścia i efekty. Tu podglądasz, jak coś ma się ruszać.</div>
+        </div>
+      </div>
+
+      <div class="cards">
+
+        <div class="card" id="s5">
+          <div class="card-head">
+            <div class="card-icon">🎞️</div>
+            <div>
+              <div class="card-name">60fps.design</div>
+              <span class="card-tag green">Biblioteka animacji</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Biblioteka nagrań mikrointerakcji z prawdziwych produktów.</strong> Krótkie, płynne klipy pokazujące pojedyncze animacje: hover, przejścia, ładowanie, rozwijanie. Wszystko sklasyfikowane, łatwo znaleźć konkretny typ ruchu.</p>
+            <a class="card-link" href="https://60fps.design/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">60fps.design</div>
+          </div>
+        </div>
+
+        <div class="card" id="s6">
+          <div class="card-head">
+            <div class="card-icon">💧</div>
+            <div>
+              <div class="card-name">Ripplix</div>
+              <span class="card-tag green">Interakcje UI</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Galeria interakcji i animacji interfejsów.</strong> Krótkie nagrania efektów z realnych aplikacji i stron. Podobne w duchu do 60fps — kolejne źródło, gdy szukasz pomysłu na to, jak element ma reagować na klik czy najazd.</p>
+            <a class="card-link" href="https://www.ripplix.com/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">ripplix.com</div>
+          </div>
+        </div>
+
+        <div class="card" id="s7">
+          <div class="card-head">
+            <div class="card-icon">⚡</div>
+            <div>
+              <div class="card-name">Motion.dev</div>
+              <span class="card-tag blue">Inspiracja + kod</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Strona biblioteki Motion (dawniej Framer Motion).</strong> Nie tylko inspiracja — sama strona jest pokazem możliwości, a w dokumentacji masz gotowe przykłady i kod. To dokładnie ta biblioteka, której używa nasz skill <code style="background:var(--bg-4);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--glow);">motion-framer</code>.</p>
+            <a class="card-link" href="https://motion.dev/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">motion.dev</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>Wskazówka do kursu:</strong> nie kopiuj 1:1. Zbierz 3–4 referencje, wybierz z każdej jeden element, który Ci się podoba, i z tego złóż własną, spójną całość. Jeden mocny efekt na stronie robi więcej niż dziesięć naraz.</div>
+      </div>
+    </div>
+
+    <!-- ══ NARZĘDZIA AI DO SEO ══ -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">🤖</div>
+        <div>
+          <div class="section-title">Narzędzia AI do SEO</div>
+          <div class="section-desc">Strona ma nie tylko ładnie wyglądać, ale i być znaleziona w Google. Te narzędzia w tym pomagają.</div>
+        </div>
+      </div>
+
+      <div class="cards">
+
+        <div class="card" id="s8">
+          <div class="card-head">
+            <div class="card-icon">✍️</div>
+            <div>
+              <div class="card-name">NeuronWriter</div>
+              <span class="card-tag yellow">Optymalizacja treści</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Narzędzie AI do pisania treści pod SEO.</strong> Analizuje strony z TOP wyników Google na dane słowo kluczowe i podpowiada, jakie frazy, nagłówki i tematy musi zawierać Twój tekst, żeby miał szansę się wybić.</p>
+            <a class="card-link" href="https://neuronwriter.com/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">neuronwriter.com</div>
+          </div>
+        </div>
+
+        <div class="card" id="s9">
+          <div class="card-head">
+            <div class="card-icon">📊</div>
+            <div>
+              <div class="card-name">Semrush</div>
+              <span class="card-tag yellow">Platforma SEO</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Jedna z największych platform SEO na świecie.</strong> Słowa kluczowe, analiza konkurencji, audyt strony, śledzenie pozycji. <strong style="color:var(--glow);">Ma integrację z Claude</strong> — dane Semrush odpytasz bezpośrednio z poziomu Claude, bez przeklikiwania się przez panel.</p>
+            <a class="card-link" href="https://www.semrush.com/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">semrush.com</div>
+          </div>
+        </div>
+
+        <div class="card" id="s10">
+          <div class="card-head">
+            <div class="card-icon">🔗</div>
+            <div>
+              <div class="card-name">Ahrefs</div>
+              <span class="card-tag yellow">Platforma SEO</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc"><strong>Druga wielka platforma SEO.</strong> Mocna szczególnie w analizie linków, słów kluczowych i contentu konkurencji. <strong style="color:var(--glow);">Też ma integrację z Claude</strong> — odpytujesz dane Ahrefs bezpośrednio z Claude, tak jak Semrush.</p>
+            <a class="card-link" href="https://ahrefs.com/" target="_blank" rel="noopener">Otwórz <span class="arrow">→</span></a>
+            <div class="card-url">ahrefs.com</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">🔌</span>
+        <div><strong>Semrush i Ahrefs + Claude:</strong> obie platformy mają oficjalne połączenie z Claude. Oznacza to, że Claude może sięgnąć po ich dane w trakcie pracy — np. dobrać słowa kluczowe do treści, którą właśnie piszesz na stronę. Łączysz SEO z budową strony w jednym miejscu.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div>© 2026 <a href="https://agenciai.pl" target="_blank" rel="noopener">Agenci AI</a> · Materiał pomocniczy do kursu</div>
+    <div>Inspiracje: strony · animacje · SEO</div>
+  </footer>
+
+</main>
+
+<script>
+  // Scroll-spy — podświetla aktywną pozycję w menu
+  const cards = document.querySelectorAll('.card[id]');
+  const navLinks = document.querySelectorAll('.nav-list a');
+  const byId = {};
+  navLinks.forEach(l => { byId[l.getAttribute('href')] = l; });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = byId['#' + e.target.getAttribute('id')];
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  cards.forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
